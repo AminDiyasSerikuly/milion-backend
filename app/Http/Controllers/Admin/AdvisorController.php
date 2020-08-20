@@ -64,6 +64,10 @@ class AdvisorController extends Controller
             $advisor->is_active = true;
             $advisor->fill($request->all());
             $advisor->save();
+
+            $user->assignRole('advisor');
+
+
             DB::commit();
             $request->session()->flash('success', 'Вы успешно добавили куратора!');
             return redirect(route('advisor.index'));
