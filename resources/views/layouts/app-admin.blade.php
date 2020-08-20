@@ -39,6 +39,13 @@
     <link rel="stylesheet" href="{{ asset("dashboard/plugins/bs-stepper/css/bs-stepper.min.css")}}">
     <!-- dropzonejs -->
     <link rel="stylesheet" href="{{ asset("dashboard/plugins/dropzone/min/dropzone.min.css")}}">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{asset("dashboard/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css")}}">
+    <link rel="stylesheet"
+          href="{{asset("dashboard/plugins/datatables-responsive/css/responsive.bootstrap4.min.css")}}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset("dashboard/plugins/select2/css/select2.min.css")}}">
+    <link rel="stylesheet" href="{{asset("dashboard/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css")}}">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -64,6 +71,8 @@
 <script src="{{asset("dashboard/plugins/jqvmap/maps/jquery.vmap.usa.js")}}"></script>
 <!-- jQuery Knob Chart -->
 <script src="{{asset("dashboard/plugins/jquery-knob/jquery.knob.min.js")}}"></script>
+<!-- InputMask -->
+<script src="{{asset("dashboard/plugins/inputmask/jquery.inputmask.min.js")}}"></script>
 <!-- daterangepicker -->
 <script src="{{asset("dashboard/plugins/moment/moment.min.js")}}"></script>
 <script src="{{asset("dashboard/plugins/daterangepicker/daterangepicker.js")}}"></script>
@@ -80,7 +89,8 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset("dashboard/dist/js/pages/dashboard.js")}}"></script>
 
+@yield('js')
+
+
 </body>
-
-
 </html>

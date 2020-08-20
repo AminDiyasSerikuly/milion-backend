@@ -12,9 +12,10 @@ class AddRolesSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'moderator']);
-        Role::create(['name' => 'teacher']);
-        Role::create(['name' => 'student']);
+        Role::create(['id' => 1,'name' => 'admin']);
+        Role::create(['id' => 2, 'name' => 'moderator']);
+        Role::create(['id' => 3,'name' => 'teacher']);
+        Role::create(['id' => 4,'name' => 'advisor']);
+        Role::create(['id' => 5,'name' => 'student']);
     }
 }
