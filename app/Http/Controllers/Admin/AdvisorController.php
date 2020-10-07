@@ -56,7 +56,7 @@ class AdvisorController extends Controller
             DB::beginTransaction();
             $user = User::create([
                 'name' => $request->first_name,
-                'email' => 'default@mail.com',
+                'email' => $email,
                 'password' => $password,
             ]);
             $advisor = new Advisor();

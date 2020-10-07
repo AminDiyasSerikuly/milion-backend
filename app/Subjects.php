@@ -10,4 +10,9 @@ class Subjects extends Model
     protected $fillable = [
         'title'
     ];
+
+
+    public function group()
+    {
+    }
 }

@@ -6,11 +6,13 @@
                 <div class="card-header">
                     <h3 class="card-title">Форма для заполнение предмета</h3>
                 </div>
+                <div class="alert"><span class="text-danger">При создание предмета автоматический создается группа под этот предмет.</span></div>
+
                 {{Form::open(['route' => 'subject.store', 'method' => 'POST'])}}
                 {{Form::token()}}
                 <div class="card-body">
                     <div class="form-group">
-                        <label>Название</label>
+                        <label>Название предмета</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-pen"></i></span>

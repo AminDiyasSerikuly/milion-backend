@@ -13,7 +13,8 @@
                          class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="{{route('profile.show')}}"
+                       class="d-block">{{\Illuminate\Support\Facades\Auth::user()->name}}</a>
                 </div>
             </div>
 
@@ -45,7 +46,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/layout/top-nav.html" class="nav-link">
+                                <a href="{{route('teacher.index')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Учитель</p>
                                 </a>
@@ -69,6 +70,14 @@
                             <i class="nav-icon fas fa-book"></i>
                             <p>
                                 Предметы
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('schedule.show')}}" class="nav-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>
+                                Расписание
                             </p>
                         </a>
                     </li>
@@ -99,7 +108,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">Dashboard</h1>
+                        <h1 class="m-0 text-dark"> @yield('title')</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">

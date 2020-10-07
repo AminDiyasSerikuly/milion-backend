@@ -9,6 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <link rel="stylesheet" href="{{asset("dashboard/schedule/css/style.css")}}">
     <!-- Scripts -->
 
     <!-- Styles -->
@@ -88,6 +89,9 @@
 <script src="{{asset("dashboard/dist/js/demo.js")}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset("dashboard/dist/js/pages/dashboard.js")}}"></script>
+<!-- Notify JS -->
+<script src="{{asset("dashboard/dist/js/notify/notify.min.js")}}"></script>
+
 
 @yield('js')
 

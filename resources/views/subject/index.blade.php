@@ -9,7 +9,8 @@
             <table id="curator_data_table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Название</th>
+                    <th>Название предмета</th>
+                    <th>Название группы</th>
                     <th>Дата создание</th>
                     <th>Дата изменение</th>
                 </tr>

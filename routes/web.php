@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Auth::routes();
 Route::redirect('/', '/login');
 Route::redirect('/admin', '/admin/info');
@@ -32,11 +31,23 @@ Route::group([
     'namespace' => 'Admin'
 ], function () {
     Route::get('info', 'InfoController@index');
+    Route::get('profile', 'ProfileController@show')->name('profile.show');
+    Route::post('profile/isAjax', 'ProfileController@isAjax')->name('profile.is_ajax');
+
+    Route::get('schedule/show', 'ScheduleController@show')->name('schedule.show');
 
     Route::resources([
         'advisor' => 'AdvisorController',
         'student' => 'StudentController',
         'subject' => 'SubjectsController',
+        'teacher' => 'TeacherController',
     ]);
+});
 
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'file',
+    'namespace' => 'Common',
+], function () {
+    Route::post('file/temp_save', 'FileController@tempFileUpload')->name('file.temp_save');
 });
