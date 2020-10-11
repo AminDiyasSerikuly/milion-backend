@@ -14,5 +14,6 @@ class Subjects extends Model
 
     public function group()
     {
+       return $this->hasOne(Group::class, 'subject_id', 'id');
     }
 }

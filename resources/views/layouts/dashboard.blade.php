@@ -81,6 +81,31 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('schedule.show')}}" class="nav-link">
+                            <i class="nav-icon fas fa-newspaper"></i>
+                            <p>
+                                Новости
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('schedule.show')}}" class="nav-link">
+                            <i class="nav-icon fas fa-check"></i>
+                            <p>
+                                Посещаемость
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('configure.index')}}" class="nav-link">
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>
+                                Системные настройки
+                            </p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>

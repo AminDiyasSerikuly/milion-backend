@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnPasswordChangedToUsers extends Migration
+class AddColumnIsActiveToWeekDays extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnPasswordChangedToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('password_changed')->after('image')->default(0);
+        Schema::table('week_days', function (Blueprint $table) {
+            $table->tinyInteger('is_active')->after('color_type')->default(1);
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnPasswordChangedToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('password_changed');
+        Schema::table('week_days', function (Blueprint $table) {
+            $table->dropColumn('is_active');
         });
     }
 }

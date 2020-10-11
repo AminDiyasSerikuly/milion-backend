@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Group;
+use App\Cabinet;
 use App\Http\Controllers\Controller;
-use App\Subjects;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class SubjectsController extends Controller
+class CabinetController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +16,8 @@ class SubjectsController extends Controller
      */
     public function index()
     {
-        $subjects = Subjects::all();
-        return view('subject.index', ['subjects' => $subjects]);
+        $cabinets = Cabinet::all();
+        return view('cabinets.index', ['cabinets' => $cabinets]);
     }
 
     /**
@@ -29,7 +27,7 @@ class SubjectsController extends Controller
      */
     public function create()
     {
-        return view('subject.create');
+        return view('cabinets.create');
     }
 
     /**
@@ -40,42 +38,27 @@ class SubjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), ['title' => 'required|unique:subjects']);
+        $validation = Validator::make($request->all(), (new \App\Cabinet())->rules());
         if ($validation->fails()) {
             $request->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
         }
 
-        try {
-            DB::beginTransaction();
-            $subject = new Subjects();
-            $subject->fill($request->all());
-            $subject->save();
+        $cabinet = new Cabinet();
+        $cabinet->fill($request->all());
+        $cabinet->save();
 
-            $group = new Group();
-            $group->name = sprintf('Группа "%s"', $subject->title);
-            $group->subject_id = $subject->id;
-            $group->is_active = true;
-            $group->save();
-
-            DB::commit();
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            $request->session()->flash('danger', [1 => $exception->getMessage()]);
-        }
-
-
-        return redirect(route('subject.index'));
-
+        $request->session()->flash('success', 'Вы успешно добавили студента!');
+        return redirect(route('cabinet.index'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Subjects $subjects
+     * @param \App\Cabinet $cabinet
      * @return \Illuminate\Http\Response
      */
-    public function show(Subjects $subjects)
+    public function show(Cabinet $cabinet)
     {
         //
     }
@@ -83,10 +66,10 @@ class SubjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Subjects $subjects
+     * @param \App\Cabinet $cabinet
      * @return \Illuminate\Http\Response
      */
-    public function edit(Subjects $subjects)
+    public function edit(Cabinet $cabinet)
     {
         //
     }
@@ -95,10 +78,10 @@ class SubjectsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Subjects $subjects
+     * @param \App\Cabinet $cabinet
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subjects $subjects)
+    public function update(Request $request, Cabinet $cabinet)
     {
         //
     }
@@ -106,10 +89,10 @@ class SubjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Subjects $subjects
+     * @param \App\Cabinet $cabinet
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subjects $subjects)
+    public function destroy(Cabinet $cabinet)
     {
         //
     }

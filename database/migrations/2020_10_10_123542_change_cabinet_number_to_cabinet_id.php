@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnPasswordChangedToUsers extends Migration
+class ChangeCabinetNumberToCabinetId extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddColumnPasswordChangedToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('password_changed')->after('image')->default(0);
+        Schema::table('schedules', function (Blueprint $table) {
+            $table->dropColumn('cabinet_number');
+            $table->integer('cabinet_id')->after('group_id');
         });
     }
 
@@ -25,8 +26,8 @@ class AddColumnPasswordChangedToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('password_changed');
+        Schema::table('schedules', function (Blueprint $table) {
+            //
         });
     }
 }

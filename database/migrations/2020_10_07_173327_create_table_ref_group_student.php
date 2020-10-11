@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnPasswordChangedToUsers extends Migration
+class CreateTableRefGroupStudent extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddColumnPasswordChangedToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('password_changed')->after('image')->default(0);
+        Schema::create('group_student', function (Blueprint $table) {
+            $table->id();
+            $table->integer('group_id');
+            $table->integer('student_id');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddColumnPasswordChangedToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('password_changed');
-        });
+        Schema::dropIfExists('group_student');
     }
 }

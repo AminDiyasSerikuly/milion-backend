@@ -74,6 +74,11 @@ class StudentController extends Controller
                     'student_id' => $student->id,
                     'subject_id' => $subject,
                 ]);
+
+                DB::table('group_student')->insert([
+                    'student_id' => $student->id,
+                    'group_id' => isset($subject->group) ? $subject->group->id : 0,
+                ]);
             }
 
 

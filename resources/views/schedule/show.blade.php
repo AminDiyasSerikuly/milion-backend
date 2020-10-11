@@ -1,199 +1,223 @@
+<?php
+/** @var \App\Cabinet $cabinet */
+/** @var \App\Schedule $time */
+/** @var \App\WeekDays $day */
+
+$weekdays = \App\WeekDays::all();
+$weekdays = $weekdays->pluck('title_ru', 'week_day_number')->toArray();
+
+$cabinets = \App\Cabinet::all();
+$cabinets = $cabinets->pluck('title', 'id')->toArray();
+
+
+$groups = \App\Group::where(['is_active' => true])->get();
+$groups = $groups->pluck('name', 'id')->toArray();
+?>
 @extends('layouts.dashboard')
 @section('title')
     Расписание
 @endsection
-<script>document.getElementsByTagName("html")[0].className += " js";</script>
-<link rel="stylesheet" href="{{asset("dashboard/schedule/css/style.css")}}">
 @section('dashboard-content')
-    <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
-        <div class="cd-schedule__timeline">
-            <ul>
-                <li><span>09:00</span></li>
-                <li><span>09:30</span></li>
-                <li><span>10:00</span></li>
-                <li><span>10:30</span></li>
-                <li><span>11:00</span></li>
-                <li><span>11:30</span></li>
-                <li><span>12:00</span></li>
-                <li><span>12:30</span></li>
-                <li><span>13:00</span></li>
-                <li><span>13:30</span></li>
-                <li><span>14:00</span></li>
-                <li><span>14:30</span></li>
-                <li><span>15:00</span></li>
-                <li><span>15:30</span></li>
-                <li><span>16:00</span></li>
-                <li><span>16:30</span></li>
-                <li><span>17:00</span></li>
-                <li><span>17:30</span></li>
-                <li><span>18:00</span></li>
-            </ul>
-        </div> <!-- .cd-schedule__timeline -->
-
-        <div class="cd-schedule__events">
-            <ul>
-                <li class="cd-schedule__group">
-                    <div class="cd-schedule__top-info"><span>Понедельник</span></div>
-
-                    <ul>
-                        <li class="cd-schedule__event">
-                            <a data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                <em class="cd-schedule__name">Abs Circuit</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="09:30" data-end="10:30" data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                <em class="cd-schedule__name">Rowing Workout</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="14:00" data-end="15:15"  data-content="event-yoga-1" data-event="event-3" href="#0">
-                                <em class="cd-schedule__name">Yoga Level 1</em>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="cd-schedule__group">
-                    <div class="cd-schedule__top-info"><span>Вторник</span></div>
-
-                    <ul>
-                        <li class="cd-schedule__event">
-                            <a data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                <em class="cd-schedule__name">Rowing Workout</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="11:30" data-end="13:00"  data-content="event-restorative-yoga" data-event="event-4" href="#0">
-                                <em class="cd-schedule__name">Restorative Yoga</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="13:30" data-end="15:00" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                <em class="cd-schedule__name">Abs Circuit</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3" href="#0">
-                                <em class="cd-schedule__name">Yoga Level 1</em>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="cd-schedule__group">
-                    <div class="cd-schedule__top-info"><span>Среда</span></div>
-
-                    <ul>
-                        <li class="cd-schedule__event">
-                            <a data-start="09:00" data-end="10:15" data-content="event-restorative-yoga" data-event="event-4" href="#0">
-                                <em class="cd-schedule__name">Restorative Yoga</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="10:45" data-end="11:45" data-content="event-yoga-1" data-event="event-3" href="#0">
-                                <em class="cd-schedule__name">Yoga Level 1</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="12:00" data-end="13:45"  data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                <em class="cd-schedule__name">Rowing Workout</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="13:45" data-end="15:00" data-content="event-yoga-1" data-event="event-3" href="#0">
-                                <em class="cd-schedule__name">Yoga Level 1</em>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="cd-schedule__group">
-                    <div class="cd-schedule__top-info"><span>Четверг</span></div>
-
-                    <ul>
-                        <li class="cd-schedule__event">
-                            <a data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                <em class="cd-schedule__name">Abs Circuit</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="12:00" data-end="13:45" data-content="event-restorative-yoga" data-event="event-4" href="#0">
-                                <em class="cd-schedule__name">Restorative Yoga</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="15:30" data-end="16:30" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                <em class="cd-schedule__name">Abs Circuit</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="17:00" data-end="18:30"  data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                <em class="cd-schedule__name">Rowing Workout</em>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="cd-schedule__group">
-                    <div class="cd-schedule__top-info"><span>Пятница</span></div>
-
-                    <ul>
-                        <li class="cd-schedule__event">
-                            <a data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2" href="#0">
-                                <em class="cd-schedule__name">Rowing Workout</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="12:30" data-end="14:00" data-content="event-abs-circuit" data-event="event-1" href="#0">
-                                <em class="cd-schedule__name">Abs Circuit</em>
-                            </a>
-                        </li>
-
-                        <li class="cd-schedule__event">
-                            <a data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3" href="#0">
-                                <em class="cd-schedule__name">Yoga Level 1</em>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+    <div class="card" >
+        <div class="card-header">
+            <button class="btn btn-success" data-toggle="modal" data-target="#add_lesson_modal">
+                Добавить урок
+            </button>
         </div>
+        @foreach($week_days as $day)
+            <div class="card-body" style="overflow-x: auto;">
+                <div style="font-size: 2rem;"
+                     class="text-center card-header card-{{$day->color_type}}">{{$day->title_ru}}</div>
+                <table class="table table-bordered table-sm"  style="white-space: nowrap;" >
+                    <thead>
+                    <tr>
+                        <th scope="col">Время</th>
+                        @foreach($table_cabinets as $cabinet)
+                            <th scope="col">Кабинет {{$cabinet->title}}</th>
+                        @endforeach
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach(\App\Schedule::getLessonTimes($day->week_day_number) as $time)
+                        <tr>
+                            <td>{{$time}}</td>
+                            @foreach($table_cabinets as $cabinet)
+                                <?php
+                                isset($schedules_array[$day->week_day_number][$time][$cabinet->id]) ? ($schedule = $schedules_array[$day->week_day_number][$time][$cabinet->id]) : $schedule = null
+                                ?>
+                                <td>
+                                    @if(isset($schedule))
+                                        <div class="card"
+                                             style="background-color: #f6fdff; border: 1px solid lightgrey;">
+                                            <div class="card-header"><i class="fa fa-users"></i> {{$schedule['group']}}
+                                            </div>
+                                            <div class="card-body">
 
-        <div class="cd-schedule-modal">
-            <header class="cd-schedule-modal__header">
-                <div class="cd-schedule-modal__content">
-                    <span class="cd-schedule-modal__date"></span>
-                    <h3 class="cd-schedule-modal__name"></h3>
-                </div>
-
-                <div class="cd-schedule-modal__header-bg"></div>
-            </header>
-
-            <div class="cd-schedule-modal__body">
-                <div class="cd-schedule-modal__event-info"></div>
-                <div class="cd-schedule-modal__body-bg"></div>
+                                                <i class="fa fa-book"></i> Предмет: {{$schedule['subject_title']}}
+                                                <br>
+                                                <i class="fa fa-user"></i> Учитель: Д.Амин
+                                                {!! Form::open(['method' => 'POST', 'route' => 'schedule.delete','onsubmit' => 'return confirmDelete()']); !!}
+                                                @csrf
+                                                <input type="hidden" name="schedule_id"
+                                                       value="{{$schedule['schedule_id']}}">
+                                                <button class="float-right"
+                                                        style="padding-right:0; border: none; background-color: white;"
+                                                        type="submit">
+                                                    <i style="font-size:90%;color: red"
+                                                       class="float-right fa fa-trash"></i>
+                                                </button>
+                                                {!! Form::close(); !!}
+                                                <button value="{{$schedule['schedule_id']}}"
+                                                        class="float-right get_lesson_data"
+                                                        style="padding-right:0;border: none; background-color: white;">
+                                                    <i style="font-size:90%;color: blue"
+                                                       class="float-right fa fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @else
+                                        {{'Не указано'}}
+                                    @endif
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
+        @endforeach
+    </div>
 
-            <a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
+    <div class="modal fade" id="add_lesson_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Расписание уроков</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{Form::open(['route' => 'schedule.add', 'method' => 'POST', 'id' => 'schedule_add_form'])}}
+                {{Form::token()}}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Выберите день недели</label>
+                        {!! Form::select('week_day_id', [null => 'Выберите день'] +
+                           $weekdays,
+                            null,
+                            [
+                                'class' => 'form-control',
+                                'id' => 'week_day_id',
+                                ])
+                         !!}
+                    </div>
+                    <div class="form-group">
+                        <label>Укажите номер кабинета</label>
+                        {!! Form::select('cabinet_id', [null => 'Укажите номер кабинета'] +
+                           $cabinets,
+                            null,
+                            [
+                                'class' => 'form-control',
+                                'id' => 'cabinet_id',
+                            ])
+                         !!}
+                    </div>
+                    <div class="form-group d-none" id="lesson_begin_select">
+                        <label>Укажите время</label>
+                        {!! Form::select('lesson_time', [null => 'Укажите время'] +
+                             [],
+                              null,
+                              ['class' => 'form-control', 'id' => 'lesson_time'])
+                           !!}
+                    </div>
+                    <div class="form-group">
+                        <label>Выбирает группу</label>
+                        {!! Form::select('group_id', [null => 'Укажите группу'] +
+                           $groups,
+                            null,
+                            [
+                                'class' => 'form-control',
+                                'id' => 'group_id'
+                            ])
+                         !!}
+                        <input type="hidden" id="schedule_id" name="schedule_id">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button id="lesson_add_submit_button" type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+                {{Form::close()}}
+            </div>
         </div>
-
-        <div class="cd-schedule__cover-layer"></div>
     </div>
 @endsection
 @section('js')
-    <script src="{{asset("dashboard/schedule/js/util.js")}}"></script>
-    <script src="{{asset("dashboard/schedule/js/main.js")}}"></script>
+    <script>
+
+        function confirmDelete() {
+            return confirm('Вы уверены что хотите удалить?');
+        }
+
+
+        $('.get_lesson_data').bind('click', function () {
+            ajax('{{route('schedule.ajax')}}', 'get_lesson_data', null, $(this).val());
+        });
+
+        $('#week_day_id').on('change', function () {
+            ajax('{{route('schedule.ajax')}}', 'get_lesson_begin_time', $(this).val());
+        });
+
+        function append_to_lesson_begin_select(data) {
+            $('#lesson_time').empty();
+            $.each(data, function (key, value) {
+                $('#lesson_time')
+                    .append($("<option></option>")
+                        .attr("value", value)
+                        .text(value));
+            });
+            $('#lesson_begin_select').removeClass('d-none');
+        }
+
+        function append_to_lesson_update_form(data) {
+            var time_duration = data['time_duration'];
+            $('#week_day_id').val(data['day_of_week']).prop('disabled', true);
+            $('#cabinet_id').val(data['cabinet_id']).prop('disabled', true);
+            $('#lesson_time').append($("<option></option>")
+                .attr("value", time_duration)
+                .text(time_duration)).prop('disabled', true);
+            $('#lesson_time option[value="' + time_duration + '"]').prop('selected', true);
+            $('#lesson_begin_select').removeClass('d-none');
+            $('#group_id').val(data['group_id']);
+            $('#schedule_id').val(data['schedule_id']);
+            $('#lesson_add_submit_button').text('Изменить');
+            $('#schedule_add_form').prop('action', '{{route('schedule.update')}}');
+            $('#add_lesson_modal').modal('show');
+        }
+
+        function ajax(route, action, week_day = null, schedule_id = null) {
+            var result;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: route,
+                method: 'POST',
+                data: {action: action, week_day: week_day, schedule_id: schedule_id},
+                success: function (data) {
+                    if (action == 'get_lesson_begin_time') {
+                        append_to_lesson_begin_select(data);
+                    } else if (action == 'get_lesson_data') {
+                        append_to_lesson_update_form(data);
+                    }
+
+                }
+            });
+        }
+    </script>
 @endsection

@@ -34,14 +34,34 @@ Route::group([
     Route::get('profile', 'ProfileController@show')->name('profile.show');
     Route::post('profile/isAjax', 'ProfileController@isAjax')->name('profile.is_ajax');
 
-    Route::get('schedule/show', 'ScheduleController@show')->name('schedule.show');
 
     Route::resources([
         'advisor' => 'AdvisorController',
         'student' => 'StudentController',
         'subject' => 'SubjectsController',
         'teacher' => 'TeacherController',
+        'configure' => 'ConfigureController',
+        'cabinet' => 'CabinetController',
     ]);
+
+    Route::group([
+        'prefix' => 'schedule',
+    ], function () {
+        Route::get('show', 'ScheduleController@show')->name('schedule.show');
+        Route::post('ajax', 'ScheduleController@isAjax')->name('schedule.ajax');
+        Route::post('add', 'ScheduleController@add_schedule')->name('schedule.add');
+        Route::post('delete', 'ScheduleController@delete_schedule_lesson')->name('schedule.delete');
+        Route::post('update', 'ScheduleController@update_schedule_lesson')->name('schedule.update');
+    });
+
+
+    Route::group([
+        'prefix' => 'news',
+    ], function () {
+        Route::get('index', 'NewsController@index');
+    });
+
+    Route::get('week_days/show', 'ConfigureController@show_week_days')->name('week_days.show');
 });
 
 Route::group([
