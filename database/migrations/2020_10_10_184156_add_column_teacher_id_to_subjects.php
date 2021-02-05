@@ -14,7 +14,7 @@ class AddColumnTeacherIdToSubjects extends Migration
     public function up()
     {
         Schema::table('subjects', function (Blueprint $table) {
-            $table->integer('teacher_id')->after('title');
+            $table->integer('teacher_id')->after('title')->nullable();
         });
     }
 

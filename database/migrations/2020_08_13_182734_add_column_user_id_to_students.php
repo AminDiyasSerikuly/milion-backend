@@ -26,7 +26,7 @@ class AddColumnUserIdToStudents extends Migration
     public function down()
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->integer('user_id');
+            $table->dropColumn('user_id');
         });
     }
 }

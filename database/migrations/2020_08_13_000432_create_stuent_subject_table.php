@@ -28,6 +28,6 @@ class CreateStuentSubjectTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stuent_subject');
+        Schema::dropIfExists('student_subject');
     }
 }

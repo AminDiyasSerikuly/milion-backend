@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Group;
+
 use App\Http\Controllers\Controller;
-use App\Models\Subjects;
+use App\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class SubjectsController extends Controller
+class NewsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +19,7 @@ class SubjectsController extends Controller
      */
     public function index()
     {
-        $subjects = Subjects::all();
-        return view('subject.index', ['subjects' => $subjects]);
+        return view('news.index');
     }
 
     /**
@@ -29,53 +29,45 @@ class SubjectsController extends Controller
      */
     public function create()
     {
-        return view('subject.create');
+        return view('news.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), ['title' => 'required|unique:subjects']);
+    }
+
+    public function add_news(Request $request)
+    {
+        $validation = Validator::make($request->all(), (new \App\News)->rules());
         if ($validation->fails()) {
             $request->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
         }
 
-        try {
-            DB::beginTransaction();
-            $subject = new Subjects();
-            $subject->fill($request->all());
-            $subject->save();
-
-            $group = new Group();
-            $group->name = sprintf('Группа "%s"', $subject->title);
-            $group->subject_id = $subject->id;
-            $group->is_active = true;
-            $group->save();
-
-            DB::commit();
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            $request->session()->flash('danger', [1 => $exception->getMessage()]);
-        }
-
-
-        return redirect(route('subject.index'));
-
+        DB::table('news')->insert([
+            'name' => $request->name,
+            'title' => $request->title,
+            'is_important' => $request->is_importtant,
+            'is_active' => $request->is_active,
+            'author_id' => Auth::user()->id,
+            'content' => $request->news_content,
+            'image' => $request->image,
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Subjects $subjects
+     * @param \App\News $news
      * @return \Illuminate\Http\Response
      */
-    public function show(Subjects $subjects)
+    public function show(News $news)
     {
         //
     }
@@ -83,10 +75,10 @@ class SubjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Subjects $subjects
+     * @param \App\News $news
      * @return \Illuminate\Http\Response
      */
-    public function edit(Subjects $subjects)
+    public function edit(News $news)
     {
         //
     }
@@ -95,10 +87,10 @@ class SubjectsController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param Subjects $subjects
+     * @param \App\News $news
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subjects $subjects)
+    public function update(Request $request, News $news)
     {
         //
     }
@@ -106,10 +98,10 @@ class SubjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Subjects $subjects
+     * @param \App\News $news
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subjects $subjects)
+    public function destroy(News $news)
     {
         //
     }

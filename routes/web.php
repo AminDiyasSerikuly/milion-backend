@@ -58,7 +58,10 @@ Route::group([
     Route::group([
         'prefix' => 'news',
     ], function () {
-        Route::get('index', 'NewsController@index');
+        Route::get('index', 'NewsController@index')->name('news.index');
+        Route::get('create', 'NewsController@create')->name('news.create');
+        Route::post('add', 'NewsController@add_news')->name('news.add')
+        ;
     });
 
     Route::get('week_days/show', 'ConfigureController@show_week_days')->name('week_days.show');
@@ -71,3 +74,7 @@ Route::group([
 ], function () {
     Route::post('file/temp_save', 'FileController@tempFileUpload')->name('file.temp_save');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -1,16 +1,20 @@
 <?php
-/** @var \App\Cabinet $cabinet */
-/** @var \App\Schedule $time */
-/** @var \App\WeekDays $day */
+/** @var \App\Models\Cabinet $cabinet */
+/** @var \App\Models\Schedule $time */
+/** @var \App\Models\WeekDays $day */
 
-$weekdays = \App\WeekDays::all();
+use App\Models\Cabinet;
+use App\Models\Group;
+use App\Models\WeekDays;
+use \App\Models\Schedule;
+$weekdays = WeekDays::all();
 $weekdays = $weekdays->pluck('title_ru', 'week_day_number')->toArray();
 
-$cabinets = \App\Cabinet::all();
+$cabinets = Cabinet::all();
 $cabinets = $cabinets->pluck('title', 'id')->toArray();
 
 
-$groups = \App\Group::where(['is_active' => true])->get();
+$groups = Group::where(['is_active' => true])->get();
 $groups = $groups->pluck('name', 'id')->toArray();
 ?>
 @extends('layouts.dashboard')
@@ -18,7 +22,7 @@ $groups = $groups->pluck('name', 'id')->toArray();
     Расписание
 @endsection
 @section('dashboard-content')
-    <div class="card" >
+    <div class="card">
         <div class="card-header">
             <button class="btn btn-success" data-toggle="modal" data-target="#add_lesson_modal">
                 Добавить урок
@@ -28,7 +32,7 @@ $groups = $groups->pluck('name', 'id')->toArray();
             <div class="card-body" style="overflow-x: auto;">
                 <div style="font-size: 2rem;"
                      class="text-center card-header card-{{$day->color_type}}">{{$day->title_ru}}</div>
-                <table class="table table-bordered table-sm"  style="white-space: nowrap;" >
+                <table class="table table-bordered table-sm" style="white-space: nowrap;">
                     <thead>
                     <tr>
                         <th scope="col">Время</th>
@@ -38,7 +42,7 @@ $groups = $groups->pluck('name', 'id')->toArray();
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach(\App\Schedule::getLessonTimes($day->week_day_number) as $time)
+                    @foreach(Schedule::getLessonTimes($day->week_day_number) as $time)
                         <tr>
                             <td>{{$time}}</td>
                             @foreach($table_cabinets as $cabinet)

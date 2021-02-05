@@ -12,7 +12,7 @@ class AddWeekDays extends Seeder
      */
     public function run()
     {
-        DB::table('week_days')->truncate();
+//        DB::table('week_days')->truncate();
 
         DB::table('week_days')->insert([
             'week_day_number' => 1,

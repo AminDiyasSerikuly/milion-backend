@@ -26,7 +26,7 @@ class AddColumnToTeachers extends Migration
     public function down()
     {
         Schema::table('teachers', function (Blueprint $table) {
-            $table->dropForeign('user_id');
+            $table->dropColumn('user_id');
         });
     }
 }

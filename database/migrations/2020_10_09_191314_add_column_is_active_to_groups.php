@@ -26,7 +26,7 @@ class AddColumnIsActiveToGroups extends Migration
     public function down()
     {
         Schema::table('groups', function (Blueprint $table) {
-            //
+            $table->dropColumn('is_active');
         });
     }
 }

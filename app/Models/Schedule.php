@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,5 +43,15 @@ class Schedule extends Model
         }
 
         return $times;
+    }
+
+    public static function getSchedule()
+    {
+        $weekDays = WeekDays::all();
+
+        $weekDays = $weekDays->load('schedules')->toArray();
+
+
+        return $weekDays;
     }
 }

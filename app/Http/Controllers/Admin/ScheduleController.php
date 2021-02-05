@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Cabinet;
+use App\Models\Cabinet;
 use App\Http\Controllers\Controller;
-use App\Schedule;
-use App\WeekDays;
+use App\Models\Schedule;
+use App\Models\WeekDays;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,9 +27,10 @@ class ScheduleController extends Controller
             ->select('*', 'schedules.id as schedule_id')
             ->get();
 
+        $schedules_array = [];
         foreach ($schedules as $schedule) {
             $time = sprintf('%s-%s', $schedule->lesson_begin_time, $schedule->lesson_end_time);
-            $schedules_array[$schedule->day_of_week][$time][$schedule->cabinet_id] = [
+            $schedules_array[$schedule->week_day_id][$time][$schedule->cabinet_id] = [
                 'group' => $schedule->name,
                 'subject_title' => $schedule->title,
                 'schedule_id' => $schedule->schedule_id
@@ -56,7 +57,7 @@ class ScheduleController extends Controller
 
 
         DB::table('schedules')->insert([
-            'day_of_week' => $request->week_day_id,
+            'week_day_id' => $request->week_day_id,
             'lesson_begin_time' => substr($request->lesson_time, 0, 5),
             'lesson_end_time' => substr($request->lesson_time, 6, 11),
             'cabinet_id' => $request->cabinet_id,
@@ -100,7 +101,7 @@ class ScheduleController extends Controller
         DB::table('schedules')->where('id', '=', $schedule_id)
             ->update(['group_id' => $group_id]);
 
-        $request->session()->flash('success','Вы успешно изменили группу');
+        $request->session()->flash('success', 'Вы успешно изменили группу');
         return back();
     }
 

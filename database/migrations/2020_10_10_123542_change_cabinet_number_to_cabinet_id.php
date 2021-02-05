@@ -27,7 +27,8 @@ class ChangeCabinetNumberToCabinetId extends Migration
     public function down()
     {
         Schema::table('schedules', function (Blueprint $table) {
-            //
+            $table->integer('cabinet_number')->after('group_id');
+            $table->dropColumn('cabinet_id');
         });
     }
 }

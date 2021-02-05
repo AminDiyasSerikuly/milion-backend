@@ -15,7 +15,7 @@ class CreateSchedulesTable extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->integer('day_of_week')->nullable();
+            $table->foreignId('week_day_id')->constrained('week_days');
             $table->string('lesson_begin_time')->nullable();
             $table->string('lesson_end_time')->nullable();
             $table->string('cabinet_number')->nullable();

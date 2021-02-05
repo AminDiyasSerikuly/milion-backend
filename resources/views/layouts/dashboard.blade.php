@@ -82,7 +82,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{route('schedule.show')}}" class="nav-link">
+                        <a href="{{route('news.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-newspaper"></i>
                             <p>
                                 Новости

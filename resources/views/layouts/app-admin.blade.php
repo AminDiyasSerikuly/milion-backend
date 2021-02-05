@@ -36,6 +36,11 @@
     <link rel="stylesheet" href="{{ asset("dashboard/plugins/daterangepicker/daterangepicker.css") }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset("dashboard/plugins/summernote/summernote-bs4.min.css") }}">
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="{{asset("dashboard/plugins/codemirror/codemirror.css")}}">
+    <link rel=" stylesheet" href="{{asset("dashboard/plugins/codemirror/theme/monokai.css")}}">
+    <!-- SimpleMDE -->
+    <link rel="stylesheet" href="{{asset("dashboard/plugins/simplemde/simplemde.min.css")}}">
     <!-- BS Stepper -->
     <link rel="stylesheet" href="{{ asset("dashboard/plugins/bs-stepper/css/bs-stepper.min.css")}}">
     <!-- dropzonejs -->
@@ -81,6 +86,7 @@
 <script src="{{asset("dashboard/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js")}}"></script>
 <!-- Summernote -->
 <script src="{{asset("dashboard/plugins/summernote/summernote-bs4.min.js")}}"></script>
+
 <!-- overlayScrollbars -->
 <script src="{{asset("dashboard/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js")}}"></script>
 <!-- AdminLTE App -->

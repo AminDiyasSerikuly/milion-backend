@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\WeekDays;
+use App\Models\WeekDays;
 use Illuminate\Http\Request;
 
 class ConfigureController extends Controller
