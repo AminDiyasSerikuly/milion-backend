@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Advisor;
+use App\Models\Advisor;
 use App\Http\Controllers\Controller;
-use App\Student;
-use App\User;
+use App\Models\Student;
+use App\Models\Subjects;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -43,7 +44,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), (new \App\Student())->rules());
+        $validation = Validator::make($request->all(), (new Student())->rules());
         if ($validation->fails()) {
             $request->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
@@ -69,15 +70,22 @@ class StudentController extends Controller
             $student->user_id = $user->id;
             $student->save();
 
-            foreach ($request->subject as $subject) {
+            $subjects = Subjects::whereIn('id', $request->subject)->get();
+
+            foreach ($subjects as $subject) {
                 DB::table('student_subject')->insert([
                     'student_id' => $student->id,
-                    'subject_id' => $subject,
+                    'subject_id' => $subject->id,
                 ]);
+
+                if (!isset($subject->group)) {
+                    $request->session()->flash('danger', [1 => 'Группа предмета не существует!']);
+                    return redirect(route('student.index'));
+                }
 
                 DB::table('group_student')->insert([
                     'student_id' => $student->id,
-                    'group_id' => isset($subject->group) ? $subject->group->id : 0,
+                    'group_id' => $subject->group->id,
                 ]);
             }
 
@@ -97,7 +105,7 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Student $student
+     * @param Student $student
      * @return \Illuminate\Http\Response
      */
     public function show(Student $student)
@@ -108,7 +116,7 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Student $student
+     * @param Student $student
      * @return \Illuminate\Http\Response
      */
     public function edit(Student $student)
@@ -120,7 +128,7 @@ class StudentController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Student $student
+     * @param Student $student
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Student $student)
@@ -131,7 +139,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Student $student
+     * @param Student $student
      * @return \Illuminate\Http\Response
      */
     public function destroy(Student $student)

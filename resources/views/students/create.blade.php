@@ -1,8 +1,8 @@
 <?php
-$advisors = \App\Advisor::where(['is_active' => true])->get();
+$advisors = \App\Models\Advisor::where(['is_active' => true])->get();
 $advisors = collect($advisors)->pluck('first_name', 'id');
 
-$subjects = \App\Subjects::all();
+$subjects = \App\Models\Subjects::all();
 $subjects = collect($subjects)->pluck('title', 'id');
 ?>
 @extends('layouts.dashboard')

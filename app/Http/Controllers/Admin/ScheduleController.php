@@ -8,6 +8,7 @@ use App\Models\Schedule;
 use App\Models\WeekDays;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use function GuzzleHttp\Psr7\str;
@@ -23,8 +24,15 @@ class ScheduleController extends Controller
         $schedules = DB::table('schedules')
             ->where('is_active', '=', true)
             ->join('groups', 'schedules.group_id', '=', 'groups.id')
-            ->join('subjects', 'groups.subject_id', 'subjects.id')
-            ->select('*', 'schedules.id as schedule_id')
+            ->join('subjects', 'groups.subject_id', '=', 'subjects.id');
+
+        if (Auth::user()->hasRole('student')) {
+            $schedules = $schedules
+                ->join('group_student', 'group_student.group_id', '=', 'groups.id')
+                ->where('group_student.student_id', '=', Auth::user()->student->id);
+        }
+
+        $schedules = $schedules->select('*', 'schedules.id as schedule_id')
             ->get();
 
         $schedules_array = [];

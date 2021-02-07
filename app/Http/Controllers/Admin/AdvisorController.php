@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Advisor;
+use App\Models\Advisor;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -44,7 +44,7 @@ class AdvisorController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), (new \App\Advisor)->rules());
+        $validation = Validator::make($request->all(), (new Advisor)->rules());
         if ($validation->fails()) {
             $request->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();

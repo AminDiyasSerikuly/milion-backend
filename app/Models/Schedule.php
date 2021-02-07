@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Schedule extends Model
 {
@@ -16,6 +17,17 @@ class Schedule extends Model
             'lesson_time' => 'required',
             'group_id' => 'required',
         ];
+    }
+
+
+    public function cabinet()
+    {
+        return $this->hasOne(Cabinet::class, 'id', 'cabinet_id');
+    }
+
+    public function group()
+    {
+        return $this->hasOne(Group::class, 'id', 'group_id');
     }
 
     public static function getLessonTimes($week_day)
@@ -48,10 +60,29 @@ class Schedule extends Model
     public static function getSchedule()
     {
         $weekDays = WeekDays::all();
+        $result = [];
+        $weekDaysArray = [];
+        foreach ($weekDays as $day) {
+            $schedules = [];
+            $schedulesObject = Schedule::where(['week_day_id' => $day->id])->get();
+            $weekDaysArray['title_kz'] = $day->title_kz;
+            $weekDaysArray['title_ru'] = $day->title_ru;
+            foreach ($schedulesObject as $schedule) {
+                $scheduleArray = [];
+                $time = sprintf('%s-%s', $schedule->lesson_begin_time, $schedule->lesson_end_time);
+                $teacher = $schedule->group->subject->teacher;
+                $teacher = isset($teacher) ? sprintf('%s %s', $teacher->first_name, $teacher->last_name) : 'Не указано';
+                $scheduleArray['subject_name'] = $schedule->group->name;
+                $scheduleArray['cabinet'] = $schedule->cabinet->title;
+                $scheduleArray['teacher_name'] = $teacher;
+                $scheduleArray['time'] = $time;
+                array_push($schedules, $scheduleArray);
+            }
+            $weekDaysArray['schedule'] = $schedules;
+            array_push($result, $weekDaysArray);
 
-        $weekDays = $weekDays->load('schedules')->toArray();
+        }
 
-
-        return $weekDays;
+        return $result;
     }
 }
