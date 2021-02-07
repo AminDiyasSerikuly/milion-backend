@@ -64,7 +64,14 @@ class Schedule extends Model
         $weekDaysArray = [];
         foreach ($weekDays as $day) {
             $schedules = [];
-            $schedulesObject = Schedule::where(['week_day_id' => $day->id])->get();
+            $schedulesObject = Schedule::where(['week_day_id' => $day->id]);
+            if (Auth::user()->hasRole('student')) {
+                $schedulesObject =
+                    $schedulesObject->
+                    join('group_student', 'group_student.group_id', '=', 'schedules.group_id')
+                        ->where('group_student.student_id', '=', Auth::user()->student->id);
+            }
+            $schedulesObject = $schedulesObject->get();
             $weekDaysArray['title_kz'] = $day->title_kz;
             $weekDaysArray['title_ru'] = $day->title_ru;
             foreach ($schedulesObject as $schedule) {
@@ -80,7 +87,6 @@ class Schedule extends Model
             }
             $weekDaysArray['schedule'] = $schedules;
             array_push($result, $weekDaysArray);
-
         }
 
         return $result;
