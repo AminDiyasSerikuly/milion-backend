@@ -42,50 +42,50 @@ $groups = $groups->pluck('name', 'id')->toArray();
                     </tr>
                     </thead>
                     <tbody>
-{{--                    @foreach(Schedule::getLessonTimes($day->week_day_number) as $time)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{$time}}</td>--}}
-{{--                            @foreach($table_cabinets as $cabinet)--}}
-{{--                                <?php--}}
-{{--                                isset($schedules_array[$day->week_day_number][$time][$cabinet->id]) ? ($schedule = $schedules_array[$day->week_day_number][$time][$cabinet->id]) : $schedule = null--}}
-{{--                                ?>--}}
-{{--                                <td>--}}
-{{--                                    @if(isset($schedule))--}}
-{{--                                        <div class="card"--}}
-{{--                                             style="background-color: #f6fdff; border: 1px solid lightgrey;">--}}
-{{--                                            <div class="card-header"><i class="fa fa-users"></i> {{$schedule['group']}}--}}
-{{--                                            </div>--}}
-{{--                                            <div class="card-body">--}}
+                    @foreach(Schedule::getLessonTimes($day->week_day_number) as $time)
+                        <tr>
+                            <td>{{$time}}</td>
+                            @foreach($table_cabinets as $cabinet)
+                                <?php
+                                isset($schedules_array[$day->week_day_number][$time][$cabinet->id]) ? ($schedule = $schedules_array[$day->week_day_number][$time][$cabinet->id]) : $schedule = null
+                                ?>
+                                <td>
+                                    @if(isset($schedule))
+                                        <div class="card"
+                                             style="background-color: #f6fdff; border: 1px solid lightgrey;">
+                                            <div class="card-header"><i class="fa fa-users"></i> {{$schedule['group']}}
+                                            </div>
+                                            <div class="card-body">
 
-{{--                                                <i class="fa fa-book"></i> Предмет: {{$schedule['subject_title']}}--}}
-{{--                                                <br>--}}
-{{--                                                <i class="fa fa-user"></i> Учитель: Д.Амин--}}
-{{--                                                {!! Form::open(['method' => 'POST', 'route' => 'schedule.delete','onsubmit' => 'return confirmDelete()']); !!}--}}
-{{--                                                @csrf--}}
-{{--                                                <input type="hidden" name="schedule_id"--}}
-{{--                                                       value="{{$schedule['schedule_id']}}">--}}
-{{--                                                <button class="float-right"--}}
-{{--                                                        style="padding-right:0; border: none; background-color: white;"--}}
-{{--                                                        type="submit">--}}
-{{--                                                    <i style="font-size:90%;color: red"--}}
-{{--                                                       class="float-right fa fa-trash"></i>--}}
-{{--                                                </button>--}}
-{{--                                                {!! Form::close(); !!}--}}
-{{--                                                <button value="{{$schedule['schedule_id']}}"--}}
-{{--                                                        class="float-right get_lesson_data"--}}
-{{--                                                        style="padding-right:0;border: none; background-color: white;">--}}
-{{--                                                    <i style="font-size:90%;color: blue"--}}
-{{--                                                       class="float-right fa fa-edit"></i>--}}
-{{--                                                </button>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    @else--}}
-{{--                                        {{'Не указано'}}--}}
-{{--                                    @endif--}}
-{{--                                </td>--}}
-{{--                            @endforeach--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
+                                                <i class="fa fa-book"></i> Предмет: {{$schedule['subject_title']}}
+                                                <br>
+                                                <i class="fa fa-user"></i> Учитель: Д.Амин
+                                                {!! Form::open(['method' => 'POST', 'route' => 'schedule.delete','onsubmit' => 'return confirmDelete()']); !!}
+                                                @csrf
+                                                <input type="hidden" name="schedule_id"
+                                                       value="{{$schedule['schedule_id']}}">
+                                                <button class="float-right"
+                                                        style="padding-right:0; border: none; background-color: white;"
+                                                        type="submit">
+                                                    <i style="font-size:90%;color: red"
+                                                       class="float-right fa fa-trash"></i>
+                                                </button>
+                                                {!! Form::close(); !!}
+                                                <button value="{{$schedule['schedule_id']}}"
+                                                        class="float-right get_lesson_data"
+                                                        style="padding-right:0;border: none; background-color: white;">
+                                                    <i style="font-size:90%;color: blue"
+                                                       class="float-right fa fa-edit"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @else
+                                        {{'Не указано'}}
+                                    @endif
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
