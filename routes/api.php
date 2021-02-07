@@ -21,6 +21,5 @@ Route::group([
     'middleware' => 'auth:api',
 ], function () {
     Route::get('/user', 'UserController@info');
-
     Route::get('schedule', 'ScheduleController@schedule');
 });
