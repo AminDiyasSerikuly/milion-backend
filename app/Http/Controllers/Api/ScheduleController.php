@@ -12,13 +12,7 @@ class ScheduleController extends BaseController
 
     public function schedule()
     {
-        if (Auth::user()->hasRole('student')) {
-            $schedule = Schedule::getSchedule();
-            return $this->sendResponse($schedule);
-        } else {
-            return $this->sendError('Вы не являетесь студентом!');
-        }
-
-
+        $schedule = Schedule::getSchedule();
+        return $this->sendResponse($schedule);
     }
 }

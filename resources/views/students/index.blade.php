@@ -12,6 +12,7 @@
                     <th>Имя</th>
                     <th>Фамилия</th>
                     <th>Отчество</th>
+                    <th>Email</th>
                     <th>Адрес</th>
                     <th>Школа</th>
                     <th>Телефон</th>
@@ -25,6 +26,7 @@
                         <td>{{$student->name}}</td>
                         <td>{{$student->last_name}}</td>
                         <td>{{$student->middle_name}}</td>
+                        <td>{{$student->user? $student->user->email : 'Не указано'}}</td>
                         <td>{{$student->address}}</td>
                         <td>{{$student->school}}</td>
                         <td>{{$student->phone}}</td>

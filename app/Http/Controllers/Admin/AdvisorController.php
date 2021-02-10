@@ -52,21 +52,24 @@ class AdvisorController extends Controller
         $email = Str::random(8) . '@milion.com';
         $password = Hash::make('62hello_world');
 
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->phone = $phone;
         try {
             DB::beginTransaction();
             $user = User::create([
                 'name' => $request->first_name,
                 'email' => $email,
                 'password' => $password,
+                'phone' => $request->phone,
             ]);
             $advisor = new Advisor();
             $advisor->user_id = $user->id;
             $advisor->is_active = true;
             $advisor->fill($request->all());
+            $advisor->phone = $phone;
             $advisor->save();
 
             $user->assignRole('advisor');
-
 
             DB::commit();
             $request->session()->flash('success', 'Вы успешно добавили куратора!');
@@ -83,7 +86,6 @@ class AdvisorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Advisor $advisor
      * @return \Illuminate\Http\Response
      */
     public function show(Advisor $advisor)
@@ -94,7 +96,6 @@ class AdvisorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Advisor $advisor
      * @return \Illuminate\Http\Response
      */
     public function edit(Advisor $advisor)
@@ -106,7 +107,6 @@ class AdvisorController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Advisor $advisor
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Advisor $advisor)

@@ -18,7 +18,7 @@ class Advisor extends Model
             'last_name' => 'required',
             'middle_name' => 'required',
             'social_id' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|unique:users',
             'address' => 'required',
         ];
     }

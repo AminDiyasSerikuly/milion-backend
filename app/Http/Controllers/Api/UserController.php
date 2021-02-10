@@ -10,4 +10,9 @@ class UserController extends BaseController
     {
         return $this->sendResponse([auth()->user()]);
     }
+
+    public function avatar()
+    {
+        
+    }
 }

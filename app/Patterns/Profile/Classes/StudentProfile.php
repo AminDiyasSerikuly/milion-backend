@@ -6,7 +6,7 @@ namespace App\Patterns\Profile\Classes;
 
 use App\Helpers\ResponseFormatHelper;
 use App\Patterns\Profile\Interfaces\Profile;
-use App\Student;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

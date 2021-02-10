@@ -30,13 +30,18 @@ class Student extends Model
             'last_name' => 'required|max:32',
             'address' => 'required|max:100',
             'school' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|unique:users',
             'course_price' => 'required|int|digits_between:1,10',
             'advisor_id' => 'required',
             'subject' => 'required',
             'parent_full_name' => 'required',
             'parent_phone' => 'required',
         ];
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
 }

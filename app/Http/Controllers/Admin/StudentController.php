@@ -57,16 +57,21 @@ class StudentController extends Controller
             $password = '62hello_world';
             $password = Hash::make($password);
 
+            $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+            $request->phone = $phone;
+
             $user = User::create([
                 'name' => $request->name,
                 'email' => $email,
                 'password' => $password,
+                'phone' => $request->phone,
             ]);
 
             $user->assignRole('student');
 
             $student = new Student();
             $student->fill($request->all());
+            $student->phone = $phone;
             $student->user_id = $user->id;
             $student->save();
 

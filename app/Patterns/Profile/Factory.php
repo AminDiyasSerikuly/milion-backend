@@ -4,11 +4,11 @@
 namespace App\Patterns\Profile;
 
 
+use App\Models\User;
 use App\Patterns\Profile\Classes\AdvisorProfile;
 use App\Patterns\Profile\Classes\StudentProfile;
 use App\Patterns\Profile\Classes\TeacherProfile;
-use App\Teacher;
-use App\User;
+
 
 class Factory
 {

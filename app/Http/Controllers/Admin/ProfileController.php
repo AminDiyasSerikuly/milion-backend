@@ -17,7 +17,7 @@ use function Symfony\Component\String\s;
 class ProfileController extends Controller
 {
     public function show(Request $request)
-    {   
+    {
         $role = $this->getRole();
         $currentUser = (new \App\Patterns\Profile\Factory)->getItem($role)->getRelation();
         return view('profile.show', ['currentUser' => $currentUser]);
@@ -51,6 +51,10 @@ class ProfileController extends Controller
 
     private function getRole()
     {
-        return Auth::user()->roles->pluck('id')->toArray()[0];
+        $roles = Auth::user()->roles->pluck('id')->toArray();
+        if (!empty($roles)) {
+            return $roles[0];
+        }
+        return null;
     }
 }
