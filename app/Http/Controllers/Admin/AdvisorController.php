@@ -44,40 +44,45 @@ class AdvisorController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), (new Advisor)->rules());
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->merge([
+            'phone' => $phone,
+        ]);
+        $data = $request;
+
+        $validation = Validator::make($data->all(), (new Advisor)->rules());
         if ($validation->fails()) {
-            $request->session()->flash('danger', $validation->errors()->all());
+            $data->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
         }
         $email = Str::random(8) . '@milion.com';
         $password = Hash::make('62hello_world');
 
-        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
-        $request->phone = $phone;
+
         try {
             DB::beginTransaction();
             $user = User::create([
-                'name' => $request->first_name,
+                'name' => $data->first_name,
                 'email' => $email,
                 'password' => $password,
-                'phone' => $request->phone,
+                'phone' => $data->phone,
             ]);
             $advisor = new Advisor();
             $advisor->user_id = $user->id;
             $advisor->is_active = true;
-            $advisor->fill($request->all());
+            $advisor->fill($data->all());
             $advisor->phone = $phone;
             $advisor->save();
 
             $user->assignRole('advisor');
 
             DB::commit();
-            $request->session()->flash('success', 'Вы успешно добавили куратора!');
+            $data->session()->flash('success', 'Вы успешно добавили куратора!');
             return redirect(route('advisor.index'));
 
         } catch (\Exception $exception) {
             DB::rollback();
-            $request->session()->flash('danger', [1 => $exception->getMessage()]);
+            $data->session()->flash('danger', [1 => $exception->getMessage()]);
             return back()->withInput();
         }
 

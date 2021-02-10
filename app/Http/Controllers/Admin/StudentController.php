@@ -44,9 +44,15 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), (new Student())->rules());
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->merge([
+            'phone' => $phone,
+        ]);
+        $data = $request;
+
+        $validation = Validator::make($data->all(), (new Student())->rules());
         if ($validation->fails()) {
-            $request->session()->flash('danger', $validation->errors()->all());
+            $data->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
         }
 
@@ -57,25 +63,23 @@ class StudentController extends Controller
             $password = '62hello_world';
             $password = Hash::make($password);
 
-            $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
-            $request->phone = $phone;
 
             $user = User::create([
-                'name' => $request->name,
+                'name' => $data->name,
                 'email' => $email,
                 'password' => $password,
-                'phone' => $request->phone,
+                'phone' => $data->phone,
             ]);
 
             $user->assignRole('student');
 
             $student = new Student();
-            $student->fill($request->all());
+            $student->fill($data->all());
             $student->phone = $phone;
             $student->user_id = $user->id;
             $student->save();
 
-            $subjects = Subjects::whereIn('id', $request->subject)->get();
+            $subjects = Subjects::whereIn('id', $data->subject)->get();
 
             foreach ($subjects as $subject) {
                 DB::table('student_subject')->insert([
@@ -84,7 +88,7 @@ class StudentController extends Controller
                 ]);
 
                 if (!isset($subject->group)) {
-                    $request->session()->flash('danger', [1 => 'Группа предмета не существует!']);
+                    $data->session()->flash('danger', [1 => 'Группа предмета не существует!']);
                     return redirect(route('student.index'));
                 }
 
@@ -97,12 +101,12 @@ class StudentController extends Controller
 
             DB::commit();
 
-            $request->session()->flash('success', 'Вы успешно добавили студента!');
+            $data->session()->flash('success', 'Вы успешно добавили студента!');
             return redirect(route('student.index'));
 
         } catch (\Exception $e) {
             DB::rollback();
-            $request->session()->flash('danger', [1 => $e->getMessage()]);
+            $data->session()->flash('danger', [1 => $e->getMessage()]);
             return back()->withInput();
         }
     }
