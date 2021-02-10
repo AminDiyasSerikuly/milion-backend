@@ -27,7 +27,7 @@ class FileController extends Controller
             $name = time() . '.' . $image->getClientOriginalExtension();
 
             $image->move($destinationPath, $name);
-            $path = 'temp/images/profile/' . $request->session()->getId() . DIRECTORY_SEPARATOR . $name;
+            $path = 'temp/images/profile' . $request->session()->getId() . DIRECTORY_SEPARATOR . $name;
             return response()->json([
                 'success' => true,
                 'path' => asset($path),
