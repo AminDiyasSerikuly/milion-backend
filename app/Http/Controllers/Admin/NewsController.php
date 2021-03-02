@@ -4,105 +4,108 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
-use App\News;
+use App\Models\FileUpload;
+use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
-     */
     public function index()
     {
-        return view('news.index');
+        $news = News::all();
+        return view('news.index', compact('news'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
-     */
     public function create()
     {
         return view('news.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }
 
     public function add_news(Request $request)
     {
-        $validation = Validator::make($request->all(), (new \App\News)->rules());
+        $validation = Validator::make($request->all(), News::rules());
+        if ($validation->fails()) {
+            $request->session()->flash('danger', $validation->errors()->all());
+            return back()->withInput();
+        }
+        try {
+            $file = new FileUpload(new News());
+            $upload_result = $file->upload($request);
+
+            DB::table('news')->insert([
+                'name' => $request->name,
+                'title' => $request->title,
+                'is_important' => isset($request->is_important) ?? 1,
+                'is_active' => isset($request->is_active) ?? 1,
+                'author_id' => Auth::user()->id,
+                'content' => $request->news_content,
+                'image' => $upload_result['name'],
+            ]);
+            $request->session()->flash('success', 'Вы успешно добавили новость');
+            return redirect(route('news.index'));
+        } catch (\Exception $exception) {
+            $request->session()->flash('danger', $exception->getMessage());
+            $file->rollback($request, $upload_result['name']);
+            return back()->withInput();
+        }
+    }
+
+    public function edit(News $news)
+    {
+        return view('news.edit', compact('news'));
+    }
+
+    public function update(Request $request, News $news)
+    {
+        $validation = Validator::make($request->all(), News::updateRules());
         if ($validation->fails()) {
             $request->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
         }
 
-        DB::table('news')->insert([
-            'name' => $request->name,
-            'title' => $request->title,
-            'is_important' => $request->is_importtant,
-            'is_active' => $request->is_active,
-            'author_id' => Auth::user()->id,
-            'content' => $request->news_content,
-            'image' => $request->image,
-        ]);
+        try {
+
+            $data = [];
+            if ($request->hasFile('image')) {
+                $file = new FileUpload(new News());
+                $upload_result = $file->upload($request);
+            }
+
+            $data = [
+                'name' => $request->name,
+                'title' => $request->title,
+                'is_important' => isset($request->is_important) ?? 1,
+                'is_active' => isset($request->is_active) ?? 1,
+                'author_id' => Auth::user()->id,
+                'content' => $request->news_content,
+            ];
+            if(isset($upload_result)){
+                $data['image'] = $upload_result['name'];
+            }
+
+
+            $news->update($data);
+
+            $request->session()->flash('success', 'Вы успешно изменили новость');
+            return redirect(route('news.index'));
+        } catch (\Exception $exception) {
+            $request->session()->flash('danger', $exception->getMessage());
+            if ($request->hasFile('image')) {
+                $file->rollback($request, $upload_result['name']);
+            }
+            return back()->withInput();
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\News $news
-     * @return \Illuminate\Http\Response
-     */
-    public function show(News $news)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\News $news
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(News $news)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\News $news
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, News $news)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\News $news
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(News $news)
     {
-        //
+        $news->delete();
+        return redirect(route('news.index'));
     }
 }

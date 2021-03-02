@@ -117,9 +117,12 @@
                     <div
                         class="alert alert-{{session()->has('success') ? 'success': 'danger'}} alert-dismissible fade show"
                         role="alert">
-                        @if(isset($danger)) @foreach(session()->get('danger') as $error)
-                            <strong>{{$error}}</strong> <br>
-                        @endforeach
+                        @if(isset($danger) && is_array(session()->get('danger')))
+                            @foreach(session()->get('danger') as $error)
+                                <strong>{{$error}}</strong> <br>
+                            @endforeach
+                        @elseif(isset($danger))
+                            <strong>{{session()->get('danger')}}</strong> <br>
                         @endif
                         <strong>{{session()->get('success')}}</strong>
 

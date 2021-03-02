@@ -51,6 +51,5 @@ class FileController extends Controller
             Auth::user()->image = $file;
             Auth::user()->save();
         }
-
     }
 }

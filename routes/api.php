@@ -22,4 +22,6 @@ Route::group([
 ], function () {
     Route::get('/user', 'UserController@info');
     Route::get('schedule', 'ScheduleController@schedule');
+    Route::get('news', 'NewsController@news');
+    Route::get('news/{id}', 'NewsController@newsById');
 });

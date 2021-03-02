@@ -60,9 +60,9 @@ Route::group([
     ], function () {
         Route::get('index', 'NewsController@index')->name('news.index');
         Route::get('create', 'NewsController@create')->name('news.create');
-        Route::post('add', 'NewsController@add_news')->name('news.add')
-        ;
+        Route::post('add', 'NewsController@add_news')->name('news.add');
     });
+    Route::resource('news', 'NewsController')->only(['destroy', 'edit', 'update']);
 
     Route::get('week_days/show', 'ConfigureController@show_week_days')->name('week_days.show');
 });

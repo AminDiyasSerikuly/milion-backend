@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Форма для заполнение новостей</h3>
                 </div>
-                {{Form::open(['route' => 'news.add', 'method' => 'POST'])}}
+                {{Form::open(['route' => 'news.add', 'method' => 'POST', 'files' => true])}}
                 {{Form::token()}}
                 <div class="card-body">
                     <div class="row">
@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <div class="icheck-primary d-inline">
-                                <input name="is_important" type="checkbox" id="checkboxPrimary1" checked>
+                                <input name="is_important" type="checkbox" id="checkboxPrimary1">
                                 <label for="checkboxPrimary1">
                                     Важная новость
                                 </label>
@@ -46,8 +46,8 @@
                             <br>
                             <br>
                             <div class="icheck-primary d-inline">
-                                <input name="is_active" type="checkbox" id="checkboxPrimary1" checked>
-                                <label for="checkboxPrimary1">
+                                <input name="is_active" type="checkbox" id="checkboxPrimary2">
+                                <label for="checkboxPrimary2">
                                     Активная новость
                                 </label>
                             </div>
@@ -69,7 +69,6 @@
                     <div class="row">
                         <div class="col-md-12">
               <textarea id="summernote" name="news_content">
-                Place <em>some</em> <u>text</u> <strong>here</strong>
               </textarea>
                         </div>
                     </div>
