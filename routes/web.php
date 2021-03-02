@@ -64,6 +64,9 @@ Route::group([
     });
     Route::resource('news', 'NewsController')->only(['destroy', 'edit', 'update']);
 
+    Route::resource('faq', 'FaqController');
+
+
     Route::get('week_days/show', 'ConfigureController@show_week_days')->name('week_days.show');
 });
 

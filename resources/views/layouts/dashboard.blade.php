@@ -89,6 +89,16 @@
                             </p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a href="{{route('faq.index')}}" class="nav-link">
+                            <i class="nav-icon fas fa-question-circle"></i>
+                            <p>
+                                FAQ
+                            </p>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a href="{{route('schedule.show')}}" class="nav-link">
                             <i class="nav-icon fas fa-check"></i>
@@ -106,6 +116,7 @@
                             </p>
                         </a>
                     </li>
+
                 </ul>
             </nav>
         </div>

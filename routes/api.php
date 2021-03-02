@@ -20,8 +20,16 @@ Route::group([
     'namespace' => 'Api',
     'middleware' => 'auth:api',
 ], function () {
-    Route::get('/user', 'UserController@info');
+    Route::get('user', 'UserController@info');
+    Route::get('user/{id}', 'UserController@userById');
+
     Route::get('schedule', 'ScheduleController@schedule');
-    Route::get('news', 'NewsController@news');
+
+    Route::get('news', 'NewsController@all');
     Route::get('news/{id}', 'NewsController@newsById');
+
+    Route::get('faqs', 'FaqController@all');
+    Route::get('faq/{id}', 'FaqController@faqById');
+
+
 });

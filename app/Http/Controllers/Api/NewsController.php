@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class NewsController extends BaseController
 {
-    public function news()
+    public function all()
     {
         $news = News::all()->toArray();
         return $this->sendResponse($news);
