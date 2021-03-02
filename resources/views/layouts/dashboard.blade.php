@@ -100,6 +100,15 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{route('chat.index')}}" class="nav-link">
+                            <i class="nav-icon fas fa-inbox"></i>
+                            <p>
+                                Чат
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{route('schedule.show')}}" class="nav-link">
                             <i class="nav-icon fas fa-check"></i>
                             <p>
