@@ -109,7 +109,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{route('schedule.show')}}" class="nav-link">
+                        <a href="{{route('attendance.show')}}" class="nav-link">
                             <i class="nav-icon fas fa-check"></i>
                             <p>
                                 Посещаемость

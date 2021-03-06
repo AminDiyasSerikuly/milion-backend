@@ -27,7 +27,7 @@ Route::group([
 
     Route::get('news', 'NewsController@all');
     Route::get('news/{id}', 'NewsController@newsById');
-
+    
     Route::get('faqs', 'FaqController@all');
     Route::get('faq/{id}', 'FaqController@faqById');
 

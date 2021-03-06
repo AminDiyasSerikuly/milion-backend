@@ -145,14 +145,22 @@ class StudentController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Student $student
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Student $student)
     {
-        //
+        if ($student->delete()) {
+            session()->flash('success', 'Вы успешно удалили!');
+        }
+        session()->flash('danger', 'Поизошла ошибка при удаление!');
+        return redirect(route('student.index'));
+    }
+
+    public function debt(Request $request)
+    {
+        $debt = $request->debt;
+        $user = User::find($request->id);
+        $user->debt = $debt;
+        $user->save();
+        session()->flash('success', 'Вы успешно добавили задолжность!');
+        return redirect(route('student.index'));
     }
 }

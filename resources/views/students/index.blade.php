@@ -32,12 +32,69 @@
                         <td>{{$student->phone}}</td>
                         <td>{{$student->course_price}}</td>
                         <td>{{$student->advisor_id}}</td>
+                        <td>
+                            <div class="btn-group" style="position: relative;">
+                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Действие
+                                </button>
+                                <div class="dropdown-menu" style="position: absolute;">
+                                    <form action="{{ route('student.destroy', $student->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fa fa-trash"></i>
+                                            &nbsp;
+                                            Удалить
+                                        </button>
+                                    </form>
+                                    <button onclick="debt_modal(this)"
+                                            type="button"
+                                            class="dropdown-item"
+                                            data-user_id="{{$student->user ? $student->user->id : null}}"
+                                            data-debt="{{$student->user && $student->user->debt ? $student->user->debt : 0 }}"
+                                    >
+                                        <i class="fa fa-money-bill-alt"></i>
+                                        &nbsp;
+                                        Задолжность
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
+    </div>
+    <div class="modal fade" id="student_debt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="{{route('student.debt')}}" method="POST">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Указать задолжность</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="debt">
+                            Задолжность *
+                        </label>
+                        <input type="text" name="debt" id="debt" class=" form-control">
+                        <input type="hidden" id="user_id" name="id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button
+                            type="submit" class="btn btn-primary">Сохранить
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection
 @section('js')
@@ -52,5 +109,15 @@
                 "autoWidth": false,
             });
         });
+
+        function debt_modal(object) {
+            var id = $(object).data('user_id');
+            var debt = $(object).data('debt');
+
+            $('#debt').val(debt);
+            $('#user_id').val(id);
+
+            $('#student_debt').modal();
+        }
     </script>
 @endsection
