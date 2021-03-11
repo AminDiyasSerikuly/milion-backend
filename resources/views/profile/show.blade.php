@@ -4,7 +4,7 @@
 use Illuminate\Support\Facades\Auth;
 
 $roleName = (count(Auth::user()->getRoleNames()) ? Auth::user()->getRoleNames()[0] : '');
-$social_id = $currentUser->social_id ? $currentUser->social_id : 'Не указано';
+$social_id = $currentUser && $currentUser->social_id ? $currentUser->social_id : 'Не указано';
 $disabled = Auth::user()->hasRole(['admin']) ? '' : 'disabled';
 $profileImage = Auth::user()->image ? asset('files/images/profile' . DIRECTORY_SEPARATOR . Auth::user()->image) : asset('files/images/default/default_image.png');
 
@@ -212,7 +212,6 @@ $profileImage = Auth::user()->image ? asset('files/images/profile' . DIRECTORY_S
                                                     </div>
                                                 </div>
                                             </form>
-
                                         </div>
                                     </div>
                                 </div>
@@ -259,7 +258,6 @@ $profileImage = Auth::user()->image ? asset('files/images/profile' . DIRECTORY_S
             $("#file_input").focus().trigger('click');
         });
 
-
         function saveTemp(object) {
             var file = $('#file_input').prop('files')[0];
             var formData = new FormData();
@@ -287,7 +285,6 @@ $profileImage = Auth::user()->image ? asset('files/images/profile' . DIRECTORY_S
             });
         }
 
-
         function updateProfile() {
             var form = $("#form")[0];
             var formData = new FormData(form);
@@ -313,12 +310,8 @@ $profileImage = Auth::user()->image ? asset('files/images/profile' . DIRECTORY_S
                             style: 'danger',
                         });
                     }
-
                 }
             });
-
         }
-
-
     </script>
 @endsection

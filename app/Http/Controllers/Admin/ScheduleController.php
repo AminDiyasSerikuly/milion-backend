@@ -28,8 +28,11 @@ class ScheduleController extends Controller
 
         if (Auth::user()->hasRole('student')) {
             $schedules = $schedules
-                ->join('group_student', 'group_student.group_id', '=', 'groups.id')
-                ->where('group_student.student_id', '=', Auth::user()->student->id);
+                ->join('group_student', 'group_student.group_id', '=', 'groups.id');
+            if (Auth::user()->student) {
+                $schedules = $schedules->where('group_student.student_id', '=', Auth::user()->student->id);
+            }
+
         }
 
         $schedules = $schedules->select('*', 'schedules.id as schedule_id')

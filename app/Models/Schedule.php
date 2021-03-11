@@ -68,8 +68,10 @@ class Schedule extends Model
             if (Auth::user()->hasRole('student')) {
                 $schedulesObject =
                     $schedulesObject->
-                    join('group_student', 'group_student.group_id', '=', 'schedules.group_id')
-                        ->where('group_student.student_id', '=', Auth::user()->student->id);
+                    join('group_student', 'group_student.group_id', '=', 'schedules.group_id');
+                if (Auth::user()->student) {
+                    $schedulesObject = $schedulesObject->where('group_student.student_id', '=', Auth::user()->student->id);
+                }
             }
             $schedulesObject = $schedulesObject->get();
             $weekDaysArray['title_kz'] = $day->title_kz;

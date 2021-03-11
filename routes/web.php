@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,7 +57,6 @@ Route::group([
         Route::post('update', 'ScheduleController@update_schedule_lesson')->name('schedule.update');
     });
 
-
     Route::group([
         'prefix' => 'news',
     ], function () {
@@ -68,6 +68,13 @@ Route::group([
 
     Route::resource('faq', 'FaqController');
     Route::resource('chat', 'ChatController')->only(['destroy', 'index']);
+
+    Route::group([
+        'prefix' => 'attendance',
+    ], function () {
+        Route::get('index', 'AttendanceController@show')->name('attendance.show');
+        Route::get('table', 'AttendanceController@table')->name('attendance.table');
+    });
 
     Route::get('week_days/show', 'ConfigureController@show_week_days')->name('week_days.show');
 });

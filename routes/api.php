@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', 'Api\AuthController@login');
-
+Route::get('attendance/dates', 'Api\AttendanceController@dates');
+Route::get('attendance/notes', 'Api\AttendanceController@notes');
+Route::post('attendance/update', 'Api\AttendanceController@update');
+Route::get('group/students', 'Api\GroupController@students');
 Route::group([
     'namespace' => 'Api',
     'middleware' => 'auth:api',
@@ -27,7 +30,7 @@ Route::group([
 
     Route::get('news', 'NewsController@all');
     Route::get('news/{id}', 'NewsController@newsById');
-    
+
     Route::get('faqs', 'FaqController@all');
     Route::get('faq/{id}', 'FaqController@faqById');
 
@@ -35,5 +38,6 @@ Route::group([
     Route::get('chat/{id}', 'ChatController@getById');
     Route::post('chat/{id}/delete', 'ChatController@delete');
     Route::post('chat/send', 'ChatController@send');
+
 
 });

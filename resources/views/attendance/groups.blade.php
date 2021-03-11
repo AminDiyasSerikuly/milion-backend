@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 @section('title')
-    Чаты
+    Группы
 @endsection
 @section('dashboard-content')
     <div class="card">
@@ -8,21 +8,20 @@
             <table id="chat_data_table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Вопрос</th>
-                    <th>Ответ</th>
-                    <th>Дата создание</th>
-                    <th>Дата изменение</th>
+                    <th>ID</th>
+                    <th>Группа</th>
+                    <th>Предмет</th>
+                    <th>Кол-во студентов</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($chats as $chat)
+                @foreach($groups as $group)
                     <tr>
-                        <td>{{$chat->id}}</td>
-                        <td>{{$chat->name}}</td>
-                        <td>{{$chat->type}}</td>
-                        <td>{{$chat->created_at}}</td>
-                        <td>{{$chat->updated_at}}</td>
+                        <td>{{$group->id}}</td>
+                        <td>{{$group->name}}</td>
+                        <td>{{$group->subject->name}}</td>
+                        <td>{{0}}</td>
                         <td>
                             <div class="btn-group" style="position: relative;">
                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
@@ -30,15 +29,11 @@
                                     Действие
                                 </button>
                                 <div class="dropdown-menu" style="position: absolute;">
-                                    <form action="{{ route('chat.destroy', $chat->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="dropdown-item form-group">
-                                            <i class="fa fa-trash"></i>
-                                            &nbsp;
-                                            Удалить
-                                        </button>
-                                    </form>
+                                    <a href="{{route('attendance.table')}}" type="submit" class="dropdown-item">
+                                        <i class="fa fa-check-circle"></i>
+                                        &nbsp;
+                                        Проверить
+                                    </a>
                                 </div>
                             </div>
                         </td>
