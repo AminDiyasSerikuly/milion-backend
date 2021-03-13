@@ -1,32 +1,32 @@
 @extends('layouts.dashboard')
 @section('title')
-    Список учителей
+    Список модераторов
 @endsection
 @section('dashboard-content')
     <div class="card">
         <div class="card-header">
-            <a href="{{route('teacher.create')}}" class="btn btn-success">Добавить учителя</a>
+            <a href="{{route('moderator.create')}}" class="btn btn-success">Добавить модератора</a>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <table id="curator_data_table" class="table table-bordered table-striped">
+            <table id="moderator_data_table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th>Имя</th>
                     <th>Фамилия</th>
-                    <th>Отчество</th>
-                    <th>ИИН</th>
-                    <th>Номер телефона</th>
+                    <th>Активный</th>
+                    <th>Дата создание</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($teachers as $teacher)
+                @foreach($moderators as $moderator)
                     <tr>
-                        <td>{{$teacher->first_name}}</td>
-                        <td>{{$teacher->last_name}}</td>
-                        <td>{{$teacher->middle_name}}</td>
-                        <td>{{$teacher->social_id}}</td>
-                        <td>{{$teacher->phone}}</td>
+                        <td>{{$moderator->first_name}}</td>
+                        <td>{{$moderator->last_name}}</td>
+                        <td>{{$moderator->is_active ? 'Да' : 'Нет'}}</td>
+                        <td>{{$moderator->created_at}}</td>
+                        <td></td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -22,7 +22,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
-                        <a href="pages/widgets.html" class="nav-link">
+                        <a href="{{route('information.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
                                 Информация
@@ -40,7 +40,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="pages/layout/top-nav.html" class="nav-link">
+                                <a href="{{route('moderator.index')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Модератор</p>
                                 </a>

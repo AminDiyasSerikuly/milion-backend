@@ -29,7 +29,7 @@
                                     Действие
                                 </button>
                                 <div class="dropdown-menu" style="position: absolute;">
-                                    <a href="{{route('attendance.table')}}" type="submit" class="dropdown-item">
+                                    <a href="{{route('attendance.table', ['group_id' => $group->id])}}" type="submit" class="dropdown-item">
                                         <i class="fa fa-check-circle"></i>
                                         &nbsp;
                                         Проверить

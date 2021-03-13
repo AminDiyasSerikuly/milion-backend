@@ -31,7 +31,7 @@ Route::group([
     'prefix' => 'admin',
     'namespace' => 'Admin'
 ], function () {
-    Route::get('info', 'InfoController@index');
+    Route::get('information/index', 'InformationController@index')->name('information.index');
     Route::get('profile', 'ProfileController@show')->name('profile.show');
     Route::post('profile/isAjax', 'ProfileController@isAjax')->name('profile.is_ajax');
 
@@ -40,6 +40,7 @@ Route::group([
         'advisor' => 'AdvisorController',
         'student' => 'StudentController',
         'subject' => 'SubjectsController',
+        'moderator' => 'ModeratorController',
         'teacher' => 'TeacherController',
         'configure' => 'ConfigureController',
         'cabinet' => 'CabinetController',

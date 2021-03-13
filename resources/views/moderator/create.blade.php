@@ -1,11 +1,11 @@
 @extends('layouts.dashboard')
 @section('title')
-    Добавить учителя
+    Добавить модератора
 @endsection
 @section('dashboard-content')
 
     <div class="col-md-6">
-        {!! Form::open(['route' => 'teacher.store',  'method' => 'post'])!!}
+        {!! Form::open(['route' => 'moderator.store',  'method' => 'post'])!!}
         {!! Form::token();  !!}
         <div class="card card-danger">
             <div class="card-header">
@@ -40,38 +40,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Отчество</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-pen"></i></span>
-                        </div>
-
-                        {!! Form::text('middle_name',null,[
-                                    'class' => 'form-control',
-                                    ]) !!}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>ИИН</label>
-
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                        </div>
-                        {!! Form::text('social_id',null,[
-                                   'class' => 'form-control',
-                                   'id'=>"social_id",
-                                   'data-inputmask'=>'"mask": "9999-9999-9999"',
-                                   'data-mask'
-                                   ]) !!}
-
-                    </div>
-                </div>
-
-
-                <!-- phone mask -->
-                <div class="form-group">
                     <label>Номер телефона</label>
 
                     <div class="input-group">
@@ -86,17 +54,12 @@
                                   'data-mask'
                                   ]) !!}
                     </div>
-                    <!-- /.input group -->
                 </div>
-                <!-- /.form group -->
-
                 <button type="submit" class="btn btn-primary">
                     Сохранить
                 </button>
             </div>
-            <!-- /.card-body -->
         </div>
-        <!-- /.card -->
         {!! Form::close() !!}
 
     </div>

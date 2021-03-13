@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Advisor;
-use App\Teacher;
-use App\User;
+
+use App\Models\Teacher;
+
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -14,36 +15,20 @@ use Illuminate\Support\Str;
 
 class TeacherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
-     */
     public function index()
     {
         $teachers = Teacher::where(['is_active' => true])->get();
         return view('teacher.index', ['teachers' => $teachers]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
-     */
     public function create()
     {
         return view('teacher.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), (new \App\Teacher())->rules());
+        $validation = Validator::make($request->all(), (new Teacher())->rules());
         if ($validation->fails()) {
             $request->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
@@ -57,6 +42,7 @@ class TeacherController extends Controller
                 'name' => $request->first_name,
                 'email' => $email,
                 'password' => $password,
+                'phone' => $request->phone,
             ]);
             $teacher = new Teacher();
             $teacher->user_id = $user->id;
@@ -75,50 +61,5 @@ class TeacherController extends Controller
             $request->session()->flash('danger', [1 => $exception->getMessage()]);
             return back()->withInput();
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Teacher $teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Teacher $teacher)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Teacher $teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Teacher $teacher)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Teacher $teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Teacher $teacher)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Teacher $teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Teacher $teacher)
-    {
-        //
     }
 }
