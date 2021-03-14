@@ -28,9 +28,16 @@ class TeacherController extends Controller
 
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), (new Teacher())->rules());
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->merge([
+            'phone' => $phone,
+        ]);
+
+        $data = $request;
+
+        $validation = Validator::make($data->all(), (new Teacher())->rules());
         if ($validation->fails()) {
-            $request->session()->flash('danger', $validation->errors()->all());
+            $data->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
         }
         $password = Hash::make('62hello_world');
@@ -39,26 +46,88 @@ class TeacherController extends Controller
         try {
             DB::beginTransaction();
             $user = User::create([
-                'name' => $request->first_name,
+                'name' => $data->first_name,
                 'email' => $email,
                 'password' => $password,
-                'phone' => $request->phone,
+                'phone' => $data->phone,
             ]);
             $teacher = new Teacher();
             $teacher->user_id = $user->id;
             $teacher->is_active = true;
-            $teacher->fill($request->all());
+            $teacher->fill($data->all());
+            $teacher->phone = $data->phone;
             $teacher->save();
 
             $user->assignRole('teacher');
 
             DB::commit();
-            $request->session()->flash('success', 'Вы успешно добавили учителя!');
-            return redirect(route('teacher.create'));
+            $data->session()->flash('success', 'Вы успешно добавили учителя!');
+            return redirect(route('teacher.index'));
 
         } catch (\Exception $exception) {
             DB::rollback();
-            $request->session()->flash('danger', [1 => $exception->getMessage()]);
+            $data->session()->flash('danger', [1 => $exception->getMessage()]);
+            return back()->withInput();
+        }
+    }
+
+    public function edit(Teacher $teacher)
+    {
+        return view('teacher.edit', compact('teacher'));
+    }
+
+    public function update(Request $request, Teacher $teacher)
+    {
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->merge([
+            'phone' => $phone,
+        ]);
+
+        $data = $request;
+
+        $validation = Validator::make($data->all(), (new Teacher())->updateRules());
+        if ($validation->fails()) {
+            $data->session()->flash('danger', $validation->errors()->all());
+            return back()->withInput();
+        }
+        try {
+            DB::beginTransaction();
+            User::where(['id' => $teacher->user->id])
+                ->update([
+                    'name' => $data->first_name,
+                    'phone' => $data->phone,
+                ]);
+
+            $teacher->fill($data->all());
+            $teacher->phone = $data->phone;
+            $teacher->save();
+
+            DB::commit();
+            $data->session()->flash('success', 'Вы успешно изменили учителя!');
+            return back();
+
+        } catch (\Exception $exception) {
+            DB::rollback();
+            $data->session()->flash('danger', [1 => $exception->getMessage()]);
+            return back()->withInput();
+        }
+    }
+
+    public function destroy(Teacher $teacher)
+    {
+        try {
+            DB::beginTransaction();
+            $teacher->delete();
+            if (isset($teacher->user)) {
+                $teacher->user->delete();
+            }
+            DB::commit();
+            session()->flash('success', 'Вы успешно удалили учителя!');
+            return redirect(route('teacher.index'));
+
+        } catch (\Exception $exception) {
+            DB::rollback();
+            session()->flash('danger', [1 => $exception->getMessage()]);
             return back()->withInput();
         }
     }

@@ -48,6 +48,12 @@
                                             Удалить
                                         </button>
                                     </form>
+                                    <a class="dropdown-item"
+                                       href="{{route('student.edit', ['student' => $student->id])}}">
+                                        <i class="fa fa-edit"></i>
+                                        &nbsp;
+                                        Редактировать
+                                    </a>
                                     <button onclick="debt_modal(this)"
                                             type="button"
                                             class="dropdown-item"

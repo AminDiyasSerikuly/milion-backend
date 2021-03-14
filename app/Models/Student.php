@@ -42,9 +42,33 @@ class Student extends Model
         ];
     }
 
+    public function updateRules()
+    {
+        return [
+            'name' => 'required|max:32',
+            'last_name' => 'required|max:32',
+            'address' => 'required|max:100',
+            'school' => 'required',
+            'course_price' => 'required|int|digits_between:1,10',
+            'advisor_id' => 'required',
+            'subject' => 'required',
+            'parent_full_name' => 'required',
+            'parent_phone' => 'required',
+        ];
+    }
+
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function student_subjects()
+    {
+        return $this->hasMany(StudentSubject::class);
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subjects::class, StudentSubject::class, 'student_id', 'subject_id');
+    }
 }

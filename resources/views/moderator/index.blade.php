@@ -26,7 +26,31 @@
                         <td>{{$moderator->last_name}}</td>
                         <td>{{$moderator->is_active ? 'Да' : 'Нет'}}</td>
                         <td>{{$moderator->created_at}}</td>
-                        <td></td>
+                        <td>
+                            <div class="btn-group" style="position: relative;">
+                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Действие
+                                </button>
+                                <div class="dropdown-menu" style="position: absolute;">
+                                    <form action="{{ route('moderator.destroy', $moderator->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fa fa-trash"></i>
+                                            &nbsp;
+                                            Удалить
+                                        </button>
+                                    </form>
+                                    <a class="dropdown-item"
+                                       href="{{route('moderator.edit', ['moderator' => $moderator->id])}}">
+                                        <i class="fa fa-edit"></i>
+                                        &nbsp;
+                                        Редактировать
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

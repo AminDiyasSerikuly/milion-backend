@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles, HasApiTokens;
+    use Notifiable, HasRoles, HasApiTokens, SoftDeletes;
 
     const ROLE_ADMIN = 1;
     const ROLE_MODERATOR = 2;
@@ -61,8 +62,8 @@ class User extends Authenticatable
         return $this->hasOne(Advisor::class, 'user_id', 'id');
     }
 
-    public function getLastVisit()
+    public function moderator()
     {
-
+        return $this->hasOne(Moderator::class, 'user_id', 'id');
     }
 }

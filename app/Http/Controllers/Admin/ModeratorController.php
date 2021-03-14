@@ -28,9 +28,15 @@ class ModeratorController extends Controller
 
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), (new Moderator())->rules());
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->merge([
+            'phone' => $phone,
+        ]);
+        $data = $request;
+
+        $validation = Validator::make($data->all(), (new Moderator())->rules());
         if ($validation->fails()) {
-            $request->session()->flash('danger', $validation->errors()->all());
+            $data->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
         }
 
@@ -40,71 +46,87 @@ class ModeratorController extends Controller
         try {
             DB::beginTransaction();
             $user = User::create([
-                'name' => $request->first_name,
+                'name' => $data->first_name,
                 'email' => $email,
                 'password' => $password,
-                'phone' => $request->phone,
+                'phone' => $data->phone,
             ]);
             $moderator = new Moderator();
             $moderator->user_id = $user->id;
             $moderator->is_active = true;
-            $moderator->fill($request->all());
+            $moderator->fill($data->all());
+            $moderator->phone = $data->phone;
             $moderator->save();
 
             DB::commit();
-            $request->session()->flash('success', 'Вы успешно добавили модератора!');
+            $data->session()->flash('success', 'Вы успешно добавили модератора!');
             return redirect(route('moderator.index'));
 
         } catch (\Exception $exception) {
             DB::rollback();
-            $request->session()->flash('danger', [1 => $exception->getMessage()]);
+            $data->session()->flash('danger', [1 => $exception->getMessage()]);
             return back()->withInput();
         }
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Moderator $moderator
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Moderator $moderator)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Moderator $moderator
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Moderator $moderator)
     {
-        //
+        return view('moderator.edit', compact('moderator'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Moderator $moderator
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Moderator $moderator)
     {
-        //
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->merge([
+            'phone' => $phone,
+        ]);
+        $data = $request;
+
+        $validation = Validator::make($data->all(), (new Moderator())->updateRules());
+        if ($validation->fails()) {
+            $data->session()->flash('danger', $validation->errors()->all());
+            return back()->withInput();
+        }
+
+        try {
+            DB::beginTransaction();
+            User::where(['id' => $moderator->user->id])
+                ->update([
+                    'name' => $data->first_name,
+                    'phone' => $data->phone,
+                ]);
+
+            $moderator->fill($data->all());
+            $moderator->save();
+
+            DB::commit();
+            $data->session()->flash('success', 'Вы успешно изменили модератора!');
+            return redirect(route('moderator.index'));
+
+        } catch (\Exception $exception) {
+            DB::rollback();
+            $data->session()->flash('danger', [1 => $exception->getMessage()]);
+            return back()->withInput();
+        }
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\Moderator $moderator
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Moderator $moderator)
     {
-        //
+        try {
+            DB::beginTransaction();
+            if (isset($moderator->user)) {
+                $moderator->user->delete();
+                $moderator->delete();
+            }
+            DB::commit();
+            session()->flash('success', 'Вы успешно удалили модератора!');
+            return redirect(route('moderator.index'));
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            session()->flash('danger', [1 => $exception->getMessage()]);
+            return back()->withInput();
+        }
     }
 }

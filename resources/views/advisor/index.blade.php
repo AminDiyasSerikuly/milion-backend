@@ -26,6 +26,32 @@
                         <td>{{$advisor->social_id}}</td>
                         <td>{{$advisor->phone}}</td>
                         <td>{{$advisor->address}}</td>
+                        <td>
+                            <div class="btn-group" style="position: relative;">
+                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Действие
+                                </button>
+                                <div class="dropdown-menu" style="position: absolute;">
+                                    <a href="{{route('advisor.edit', ['advisor' => $advisor->id])}}" type="submit"
+                                       class="dropdown-item">
+                                        <i class="fa fa-edit"></i>
+                                        &nbsp;
+                                        Редактировать
+                                    </a>
+                                    <form action="{{route('advisor.destroy', ['advisor' => $advisor->id])}}"
+                                          method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fa fa-trash"></i>
+                                            &nbsp;
+                                            Удалить
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Advisor;
 use App\Http\Controllers\Controller;
+use App\Models\GroupStudent;
 use App\Models\Student;
+use App\Models\StudentSubject;
 use App\Models\Subjects;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -111,47 +113,101 @@ class StudentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Student $student
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Student $student)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Student $student
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Student $student)
     {
-        //
+        return view('students.edit', compact('student'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param Student $student
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Student $student)
     {
-        //
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->merge([
+            'phone' => $phone,
+        ]);
+        $data = $request;
+
+        $validation = Validator::make($data->all(), (new Student())->updateRules());
+        if ($validation->fails()) {
+            $data->session()->flash('danger', $validation->errors()->all());
+            return back()->withInput();
+        }
+
+        try {
+            DB::begintransaction();
+
+
+            User::where(['id' => $student->user->id])->update([
+                'name' => $data->name,
+                'phone' => $data->phone,
+            ]);
+
+            $student->fill($data->all());
+            $student->phone = $phone;
+            $student->save();
+
+
+            $studentSubjects = StudentSubject::where(['student_id' => $student->id])
+                ->get();
+
+            if (isset($studentSubjects)) {
+                StudentSubject::destroy($studentSubjects->pluck('id')->toArray());
+            }
+
+            $studentGroup = GroupStudent::where(['student_id' => $student->id])
+                ->get();
+
+            if (isset($studentGroup)) {
+                GroupStudent::destroy($studentGroup->pluck('id')->toArray());
+            }
+
+            $subjects = Subjects::whereIn('id', $data->subject)->get();
+
+            foreach ($subjects as $subject) {
+                DB::table('student_subject')->insert([
+                    'student_id' => $student->id,
+                    'subject_id' => $subject->id,
+                ]);
+
+                if (!isset($subject->group)) {
+                    $data->session()->flash('danger', [1 => 'Группа предмета не существует!']);
+                    return redirect(route('student.index'));
+                }
+
+                DB::table('group_student')->insert([
+                    'student_id' => $student->id,
+                    'group_id' => $subject->group->id,
+                ]);
+            }
+
+            DB::commit();
+
+            $data->session()->flash('success', 'Вы успешно добавили студента!');
+            return redirect(route('student.index'));
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $data->session()->flash('danger', [1 => $e->getMessage()]);
+            return back()->withInput();
+        }
     }
 
     public function destroy(Student $student)
     {
-        if ($student->delete()) {
-            session()->flash('success', 'Вы успешно удалили!');
+        try {
+            DB::beginTransaction();
+            $student->delete();
+            if (isset($student->user)) {
+                $student->user->delete();
+            }
+            DB::commit();
+            session()->flash('success', 'Вы успешно удалили студента!');
+            return redirect(route('student.index'));
+
+        } catch (\Exception $exception) {
+            DB::rollback();
+            session()->flash('danger', [1 => $exception->getMessage()]);
+            return back()->withInput();
         }
-        session()->flash('danger', 'Поизошла ошибка при удаление!');
-        return redirect(route('student.index'));
     }
 
     public function debt(Request $request)

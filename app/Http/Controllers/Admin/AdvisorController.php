@@ -88,45 +88,66 @@ class AdvisorController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Advisor $advisor)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Advisor $advisor)
     {
-        //
+        return view('advisor.edit', compact('advisor'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Advisor $advisor)
     {
-        //
+        $phone = (str_replace(['-', '(', ')', ' ', '+'], '', $request->phone));
+        $request->merge([
+            'phone' => $phone,
+        ]);
+        $data = $request;
+
+        $validation = Validator::make($data->all(), (new Advisor)->updateRules());
+        if ($validation->fails()) {
+            $data->session()->flash('danger', $validation->errors()->all());
+            return back()->withInput();
+        }
+        try {
+            DB::beginTransaction();
+            User::where(['id' => $advisor->user->id])->update([
+                'name' => $data->first_name,
+                'phone' => $data->phone,
+            ]);
+            $advisor->fill($data->all());
+            $advisor->phone = $phone;
+            $advisor->save();
+
+            DB::commit();
+            $data->session()->flash('success', 'Вы успешно изменили куратора!');
+            return redirect(route('advisor.index'));
+
+        } catch (\Exception $exception) {
+            DB::rollback();
+            $data->session()->flash('danger', [1 => $exception->getMessage()]);
+            return back()->withInput();
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Advisor $advisor
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Advisor $advisor)
     {
-        //
+
+        if (isset($advisor->students)) {
+            session()->flash('danger', 'Данный куратор имеет студентов!');
+            return redirect(route('advisor.index'));
+        }
+        try {
+            DB::beginTransaction();
+            $advisor->delete();
+            if (isset($advisor->user)) {
+                $advisor->user->delete();
+            }
+            DB::commit();
+            session()->flash('success', 'Вы успешно изменили куратора!');
+            return redirect(route('advisor.index'));
+
+        } catch (\Exception $exception) {
+            DB::rollback();
+            session()->flash('danger', [1 => $exception->getMessage()]);
+            return back()->withInput();
+        }
     }
 }
