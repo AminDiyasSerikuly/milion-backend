@@ -110,48 +110,6 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Загрузки</span>
-                            <span class="info-box-number">13,648</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Лайки</span>
-                            <span class="info-box-number">0</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-success"><i class="fas fa-battery-three-quarters"></i></span>
-
-                        <div class="info-box-content">
-                            <span class="info-box-text">Производительность</span>
-                            <span class="info-box-number">13,648</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-success"><i class="fas fa-memory"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Оставшиеся память</span>
-                            <span class="info-box-number">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header border-0">
@@ -175,15 +133,21 @@
                             </div>
 
                             <div class="d-flex flex-row justify-content-end">
-                                {{--                                <a href="{{route('home.index', ['week_number' => (1 - 1)])}}"--}}
-                                {{--                                   class="mr-2 btn btn-success text-white">--}}
-                                {{--                                    <i class="fas fa-arrow-left"></i> &nbsp; Предыдущая неделя--}}
-                                {{--                                </a>--}}
+                                <button id="left_button_registered_count"
+                                        onclick="ajax(this)"
+                                        data-type="registered_count"
+                                        data-week_number="1"
+                                        class="mr-2 btn btn-success text-white">
+                                    <i class="fas fa-arrow-left"></i> &nbsp; Предыдущая неделя
+                                </button>
 
-                                {{--                                <a href="{{route('home.index', ['week_number' => (1 + 1)])}}"--}}
-                                {{--                                   class=" btn btn-success text-white">--}}
-                                {{--                                    Следующая неделя &nbsp;<i class="fas fa-arrow-right "></i>--}}
-                                {{--                                </a>--}}
+                                <button id="right_button_registered_count"
+                                        onclick="ajax(this)"
+                                        data-type="registered_count"
+                                        data-week_number="-1"
+                                        class=" btn btn-success text-white">
+                                    Следующая неделя &nbsp;<i class="fas fa-arrow-right "></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -191,4 +155,85 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script>
+        ajax(null, 'registered_count');
+
+        function ajax(item, init_type = null) {
+            if (item) {
+                var type = $(item).data('type');
+                var week_number = $(item).data('week_number');
+            } else {
+                var type = init_type;
+                var week_number = 0;
+            }
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                method: 'POST',
+                url: '/admin/information/ajax',
+                data: {type: type, week_number: week_number},
+                success: function (data) {
+                    implement_chart(data)
+                }
+            });
+        }
+
+        function implement_chart(data) {
+
+            if (data.type == 'registered_count') {
+                var barChartCanvas = $('#barChart').get(0).getContext('2d')
+                label = 'Динамика регистраций пользователей';
+            }
+
+            var areaChartData = {
+                labels: data.weekDays,
+                datasets: [
+                    {
+                        label: label,
+                        backgroundColor: 'rgba(60,141,188,0.9)',
+                        borderColor: 'rgba(60,141,188,0.8)',
+                        pointRadius: false,
+                        pointColor: '#3b8bba',
+                        pointStrokeColor: 'rgba(60,141,188,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data: data.registered_count
+                    },
+                ]
+            }
+
+            var barChartData = $.extend(true, {}, areaChartData)
+            var temp0 = areaChartData.datasets[0]
+            barChartData.datasets[0] = temp0
+
+            var barChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                datasetFill: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }]
+                },
+            }
+
+            var barChart = new Chart(barChartCanvas, {
+                type: 'bar',
+                data: barChartData,
+                options: barChartOptions
+            })
+
+            $('#left_button_registered_count').data('week_number', data.week_number - 1);
+            $('#right_button_registered_count').data('week_number', data.week_number + 1);
+
+        }
+    </script>
 @endsection

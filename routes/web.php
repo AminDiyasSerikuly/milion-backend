@@ -32,6 +32,7 @@ Route::group([
     'namespace' => 'Admin'
 ], function () {
     Route::get('information/index', 'InformationController@index')->name('information.index');
+    Route::post('information/ajax', 'InformationController@ajax')->name('information.ajax');
     Route::get('profile', 'ProfileController@show')->name('profile.show');
     Route::post('profile/isAjax', 'ProfileController@isAjax')->name('profile.is_ajax');
 
