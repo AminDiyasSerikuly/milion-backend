@@ -22,6 +22,31 @@
                         <td>{{isset($subject->group) ? $subject->group->name : 'Не указано'}}</td>
                         <td>{{$subject->created_at}}</td>
                         <td>{{$subject->updated_at}}</td>
+                        <td>
+                            <div class="btn-group" style="position: relative;">
+                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Действие
+                                </button>
+                                <div class="dropdown-menu" style="position: absolute;">
+                                    <form action="{{ route('subject.destroy', $subject->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fa fa-trash"></i>
+                                            &nbsp;
+                                            Удалить
+                                        </button>
+                                    </form>
+                                    <a class="dropdown-item"
+                                       href="{{route('subject.edit', ['subject' => $subject->id])}}">
+                                        <i class="fa fa-edit"></i>
+                                        &nbsp;
+                                        Редактировать
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
