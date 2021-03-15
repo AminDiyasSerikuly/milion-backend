@@ -7,8 +7,6 @@ use App\Helpers\ResponseFormatHelper;
 use App\Http\Controllers\Common\FileController;
 use App\Http\Controllers\Controller;
 use App\Patterns\Profile\Factory;
-use App\Student;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -49,7 +47,7 @@ class ProfileController extends Controller
         return response()->json($result);
     }
 
-    private function getRole()
+    public  function getRole()
     {
         $roles = Auth::user()->roles->pluck('id')->toArray();
         if (!empty($roles)) {

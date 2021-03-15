@@ -1,5 +1,5 @@
 <?php
-/** @var \App\User $currentUser */
+/** @var \App\Models\User $currentUser */
 
 use Illuminate\Support\Facades\Auth;
 

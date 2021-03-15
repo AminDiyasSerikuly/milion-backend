@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 Route::redirect('/', '/login');
-Route::redirect('/admin', '/admin/info');
+Route::redirect('/admin', '/admin/information/index');
 
 Route::group([
 //    'middleware' => 'role:admin',

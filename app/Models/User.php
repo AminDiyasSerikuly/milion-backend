@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Facade\FlareClient\Truncation\ReportTrimmer;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,6 +47,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function getRoleName($role_id)
+    {
+        switch ($role_id) {
+            case self::ROLE_ADMIN:
+                return 'Администратор';
+            case self::ROLE_MODERATOR:
+                return 'Модератор';
+            case self::ROLE_TEACHER:
+                return 'Учитель';
+            case self::ROLE_ADVISOR:
+                return 'Куратор';
+            case self::ROLE_STUDENT:
+                return 'Студент';
+        }
+    }
 
     public function student()
     {

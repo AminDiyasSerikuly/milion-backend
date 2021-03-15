@@ -1,3 +1,4 @@
+@php($role_name  = \App\Models\User::getRoleName(app(\App\Http\Controllers\Admin\ProfileController::class)->getRole()))
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -6,7 +7,8 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="index3.html" class="nav-link">Администратор</a>
+            <a href="index3.html"
+               class="nav-link">{{$role_name}}</a>
         </li>
     </ul>
 
