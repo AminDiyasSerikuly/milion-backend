@@ -23,11 +23,13 @@ $groups = $groups->pluck('name', 'id')->toArray();
 @endsection
 @section('dashboard-content')
     <div class="card">
+        @role('admin')
         <div class="card-header">
             <button class="btn btn-success" data-toggle="modal" data-target="#add_lesson_modal">
                 Добавить урок
             </button>
         </div>
+        @endrole
         @foreach($week_days as $day)
             <div class="card-body" style="overflow-x: auto;">
                 <div style="font-size: 2rem;"
@@ -60,6 +62,7 @@ $groups = $groups->pluck('name', 'id')->toArray();
                                                 <i class="fa fa-book"></i> Предмет: {{$schedule['subject_title']}}
                                                 <br>
                                                 <i class="fa fa-user"></i> Учитель: Д.Амин
+                                                @role('admin')
                                                 {!! Form::open(['method' => 'POST', 'route' => 'schedule.delete','onsubmit' => 'return confirmDelete()']); !!}
                                                 @csrf
                                                 <input type="hidden" name="schedule_id"
@@ -71,12 +74,15 @@ $groups = $groups->pluck('name', 'id')->toArray();
                                                        class="float-right fa fa-trash"></i>
                                                 </button>
                                                 {!! Form::close(); !!}
+                                                @endrole
+                                                @role('admin')
                                                 <button value="{{$schedule['schedule_id']}}"
                                                         class="float-right get_lesson_data"
                                                         style="padding-right:0;border: none; background-color: white;">
                                                     <i style="font-size:90%;color: blue"
                                                        class="float-right fa fa-edit"></i>
                                                 </button>
+                                                @endrole
                                             </div>
                                         </div>
                                     @else

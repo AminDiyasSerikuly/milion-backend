@@ -12,7 +12,9 @@
                     <th>Группа</th>
                     <th>Предмет</th>
                     <th>Кол-во студентов</th>
+                    @role('admin|teacher|advisor')
                     <th></th>
+                    @endrole
                 </tr>
                 </thead>
                 <tbody>
@@ -20,8 +22,9 @@
                     <tr>
                         <td>{{$group->id}}</td>
                         <td>{{$group->name}}</td>
-                        <td>{{$group->subject->name}}</td>
-                        <td>{{0}}</td>
+                        <td>{{$group->subject->title}}</td>
+                        <td>{{isset($group->students) ?count($group->students) : 0}}</td>
+                        @role('admin|teacher|advisor')
                         <td>
                             <div class="btn-group" style="position: relative;">
                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
@@ -29,7 +32,8 @@
                                     Действие
                                 </button>
                                 <div class="dropdown-menu" style="position: absolute;">
-                                    <a href="{{route('attendance.table', ['group_id' => $group->id])}}" type="submit" class="dropdown-item">
+                                    <a href="{{route('attendance.table', ['group_id' => $group->id])}}" type="submit"
+                                       class="dropdown-item">
                                         <i class="fa fa-check-circle"></i>
                                         &nbsp;
                                         Проверить
@@ -37,6 +41,7 @@
                                 </div>
                             </div>
                         </td>
+                        @endrole
                     </tr>
                 @endforeach
                 </tbody>

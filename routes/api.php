@@ -39,5 +39,4 @@ Route::group([
     Route::post('chat/{id}/delete', 'ChatController@delete');
     Route::post('chat/send', 'ChatController@send');
 
-
 });

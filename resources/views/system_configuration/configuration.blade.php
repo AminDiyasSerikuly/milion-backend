@@ -11,15 +11,18 @@
                     <div class="card-body">
                         <div class="col-12 text-center" style="font-size: 3rem;"><i class="fa fa-door-open"></i></div>
                         <div class="row text-center">
-                        <a href="{{route('cabinet.create')}}" class=" col-12">Добавить кабинеты</a>
-                        <a href="{{route('cabinet.index')}}" class="col-12">Список кабинетов</a>
+                            @role('admin')
+                            <a href="{{route('cabinet.create')}}" class=" col-12">Добавить кабинеты</a>
+                            @endrole
+                            <a href="{{route('cabinet.index')}}" class="col-12">Список кабинетов</a>
                         </div>
                     </div>
                 </div>
                 <div class="card col-2">
                     <div class="text-center card-header">Дни недели</div>
                     <div class="card-body">
-                        <div class="col-12 text-center" style="font-size: 3rem;"><i class="fa fa-calendar-day"></i></div>
+                        <div class="col-12 text-center" style="font-size: 3rem;"><i class="fa fa-calendar-day"></i>
+                        </div>
                         <div class="row text-center">
                             <a href="{{route('week_days.show')}}" class=" col-12">Настроить дни</a>
                         </div>

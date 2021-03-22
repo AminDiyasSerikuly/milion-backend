@@ -6,41 +6,32 @@ use App\Models\Group;
 use App\Http\Controllers\Controller;
 use App\Models\Subjects;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class SubjectsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
-     */
     public function index()
     {
         $subjects = Subjects::all();
+        $currentUser = Auth::user();
+        if ($currentUser->student) {
+            $subjects = $currentUser->student->subjects;
+        } elseif ($currentUser->teacher) {
+            $subjects = $currentUser->teacher->subjects;
+        }
         return view('subject.index', ['subjects' => $subjects]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
-     */
     public function create()
     {
         return view('subject.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(), ['title' => 'required|unique:subjects']);
+        $validation = Validator::make($request->all(), ['title' => 'required']);
         if ($validation->fails()) {
             $request->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
@@ -52,11 +43,6 @@ class SubjectsController extends Controller
             $subject->fill($request->all());
             $subject->save();
 
-            $group = new Group();
-            $group->name = sprintf('Группа "%s"', $subject->title);
-            $group->subject_id = $subject->id;
-            $group->is_active = true;
-            $group->save();
 
             DB::commit();
         } catch (\Exception $exception) {
@@ -85,10 +71,6 @@ class SubjectsController extends Controller
             DB::beginTransaction();
             $subject->fill($request->all());
             $subject->save();
-
-            $group = Group::where(['subject_id' => $subject->id])->first();
-            $group->name = sprintf('Группа "%s"', $subject->title);
-            $group->save();
 
             DB::commit();
 

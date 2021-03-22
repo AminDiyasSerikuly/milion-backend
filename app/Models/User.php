@@ -83,4 +83,5 @@ class User extends Authenticatable
     {
         return $this->hasOne(Moderator::class, 'user_id', 'id');
     }
+
 }

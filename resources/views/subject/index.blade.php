@@ -1,9 +1,11 @@
 @extends('layouts.dashboard')
 @section('dashboard-content')
     <div class="card">
+        @role('admin')
         <div class="card-header">
             <a href="{{route('subject.create')}}" class="btn btn-success">Добавить предмет</a>
         </div>
+        @endrole
         <!-- /.card-header -->
         <div class="card-body">
             <table id="curator_data_table" class="table table-bordered table-striped">
@@ -22,6 +24,7 @@
                         <td>{{isset($subject->group) ? $subject->group->name : 'Не указано'}}</td>
                         <td>{{$subject->created_at}}</td>
                         <td>{{$subject->updated_at}}</td>
+                        @role('admin')
                         <td>
                             <div class="btn-group" style="position: relative;">
                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
@@ -47,6 +50,7 @@
                                 </div>
                             </div>
                         </td>
+                        @endrole
                     </tr>
                 @endforeach
                 </tbody>

@@ -29,6 +29,7 @@
                             </p>
                         </a>
                     </li>
+                    @role('admin|moderator')
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
@@ -65,6 +66,8 @@
                             </li>
                         </ul>
                     </li>
+                    @endrole
+                    @role('admin|moderator|teacher|student')
                     <li class="nav-item">
                         <a href="{{route('subject.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
@@ -73,6 +76,18 @@
                             </p>
                         </a>
                     </li>
+                    @endrole
+                    @role('admin|moderator|teacher|student|advisor')
+                    <li class="nav-item">
+                        <a href="{{route('group.index')}}" class="nav-link">
+                            <i class="nav-icon fa fa-users"></i>
+                            <p>
+                                Группы
+                            </p>
+                        </a>
+                    </li>
+                    @endrole
+                    @role('admin|moderator|teacher|student|advisor')
                     <li class="nav-item">
                         <a href="{{route('schedule.show')}}" class="nav-link">
                             <i class="nav-icon fas fa-table"></i>
@@ -81,6 +96,8 @@
                             </p>
                         </a>
                     </li>
+                    @endrole
+                    @role('admin|moderator')
                     <li class="nav-item">
                         <a href="{{route('news.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-newspaper"></i>
@@ -89,7 +106,8 @@
                             </p>
                         </a>
                     </li>
-
+                    @endrole
+                    @role('admin|moderator')
                     <li class="nav-item">
                         <a href="{{route('faq.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-question-circle"></i>
@@ -98,7 +116,8 @@
                             </p>
                         </a>
                     </li>
-
+                    @endrole
+                    @role('admin')
                     <li class="nav-item">
                         <a href="{{route('chat.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-inbox"></i>
@@ -107,7 +126,8 @@
                             </p>
                         </a>
                     </li>
-
+                    @endrole
+                    @role('admin|teacher|advisor')
                     <li class="nav-item">
                         <a href="{{route('attendance.show')}}" class="nav-link">
                             <i class="nav-icon fas fa-check"></i>
@@ -116,7 +136,8 @@
                             </p>
                         </a>
                     </li>
-
+                    @endrole
+                    @role('admin')
                     <li class="nav-item">
                         <a href="{{route('configure.index')}}" class="nav-link">
                             <i class="nav-icon fas fa-cogs"></i>
@@ -125,7 +146,7 @@
                             </p>
                         </a>
                     </li>
-
+                    @endrole
                 </ul>
             </nav>
         </div>

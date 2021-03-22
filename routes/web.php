@@ -45,6 +45,7 @@ Route::group([
         'teacher' => 'TeacherController',
         'configure' => 'ConfigureController',
         'cabinet' => 'CabinetController',
+        'group' => 'GroupController',
     ]);
 
     Route::post('student/debt', 'StudentController@debt')->name('student.debt');

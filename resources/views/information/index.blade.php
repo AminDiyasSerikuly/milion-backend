@@ -6,6 +6,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
+                @role('admin')
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -20,6 +21,8 @@
                         </a>
                     </div>
                 </div>
+                @endrole
+                @role('admin|advisor')
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -35,6 +38,8 @@
                         </a>
                     </div>
                 </div>
+                @endrole
+                @role('admin')
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -50,6 +55,8 @@
                         </a>
                     </div>
                 </div>
+                @endrole
+                @role('admin')
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -64,6 +71,8 @@
                         </a>
                     </div>
                 </div>
+                @endrole
+                @role('admin|teacher|advisor|moderator|student')
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -78,6 +87,8 @@
                         </a>
                     </div>
                 </div>
+                @endrole
+                @role('admin|teacher|advisor|moderator|student')
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -92,6 +103,8 @@
                         </a>
                     </div>
                 </div>
+                @endrole
+                @role('admin|teacher|advisor|moderator')
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
@@ -106,8 +119,10 @@
                         </a>
                     </div>
                 </div>
+                @endrole
             </div>
         </div>
+        @role('admin|moderator')
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12">
@@ -154,6 +169,7 @@
                 </div>
             </div>
         </div>
+        @endrole
     </div>
 @endsection
 @section('js')

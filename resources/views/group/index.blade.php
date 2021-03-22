@@ -1,31 +1,34 @@
 @extends('layouts.dashboard')
-@section('title')
-    Чаты
-@endsection
 @section('dashboard-content')
     <div class="card">
+        @role('admin')
+        <div class="card-header">
+            <a href="{{route('group.create')}}" class="btn btn-success">Добавить группу</a>
+        </div>
+        @endrole
+        <!-- /.card-header -->
         <div class="card-body">
-            <table id="chat_data_table" class="table table-bordered table-striped">
+            <table id="curator_data_table" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                    <th>Вопрос</th>
-                    <th>Ответ</th>
+                    <th>Название</th>
+                    <th>Предмет группы</th>
+                    <th>Кол-во студентов</th>
+                    <th>Преподаватель</th>
                     <th>Дата создание</th>
                     <th>Дата изменение</th>
-                    @role('admin|moderator')
-                    <th></th>
-                    @endrole
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($chats as $chat)
+                @foreach($groups as $group)
                     <tr>
-                        <td>{{$chat->id}}</td>
-                        <td>{{$chat->name}}</td>
-                        <td>{{$chat->type}}</td>
-                        <td>{{$chat->created_at}}</td>
-                        <td>{{$chat->updated_at}}</td>
-                        @role('admin|moderator')
+                        <td>{{$group->name}}</td>
+                        <td>{{$group->subject ? $group->subject->title : 'Не указано'}}</td>
+                        <td>{{count($group->groupStudents)}}</td>
+                        <td>{{$group->teacher ?sprintf('%s %s', $group->teacher->first_name,  $group->teacher->last_name ) : 'Не указано'}}</td>
+                        <td>{{$group->created_at}}</td>
+                        <td>{{$group->updated_at}}</td>
+                        @role('admin')
                         <td>
                             <div class="btn-group" style="position: relative;">
                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
@@ -33,15 +36,21 @@
                                     Действие
                                 </button>
                                 <div class="dropdown-menu" style="position: absolute;">
-                                    <form action="{{ route('chat.destroy', $chat->id) }}" method="POST">
+                                    <form action="{{ route('group.destroy', $group->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="dropdown-item form-group">
+                                        <button type="submit" class="dropdown-item">
                                             <i class="fa fa-trash"></i>
                                             &nbsp;
                                             Удалить
                                         </button>
                                     </form>
+                                    <a class="dropdown-item"
+                                       href="{{route('group.edit', ['group' => $group->id])}}">
+                                        <i class="fa fa-edit"></i>
+                                        &nbsp;
+                                        Редактировать
+                                    </a>
                                 </div>
                             </div>
                         </td>
@@ -61,7 +70,7 @@
     <script src="{{asset("dashboard/plugins/datatables-responsive/js/responsive.bootstrap4.min.js")}}"></script>
     <script>
         $(function () {
-            $("#chat_data_table").DataTable({
+            $("#curator_data_table").DataTable({
                 "responsive": true,
                 "autoWidth": false,
             });

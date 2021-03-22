@@ -31,9 +31,11 @@
                                         ]) !!}
                         </div>
                     </div>
+                    @role('admin')
                     <button class="btn btn-primary">
                         Добавить
                     </button>
+                    @endrole
                 </div>
 
                 {{Form::close()}}

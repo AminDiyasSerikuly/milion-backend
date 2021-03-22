@@ -4,9 +4,11 @@
 @endsection
 @section('dashboard-content')
     <div class="card">
+        @role('admin')
         <div class="card-header">
             <a href="{{route('moderator.create')}}" class="btn btn-success">Добавить модератора</a>
         </div>
+        @endrole
         <!-- /.card-header -->
         <div class="card-body">
             <table id="moderator_data_table" class="table table-bordered table-striped">
@@ -16,7 +18,9 @@
                     <th>Фамилия</th>
                     <th>Активный</th>
                     <th>Дата создание</th>
+                    @role('admin')
                     <th></th>
+                    @endrole
                 </tr>
                 </thead>
                 <tbody>
@@ -26,6 +30,7 @@
                         <td>{{$moderator->last_name}}</td>
                         <td>{{$moderator->is_active ? 'Да' : 'Нет'}}</td>
                         <td>{{$moderator->created_at}}</td>
+                        @role('admin')
                         <td>
                             <div class="btn-group" style="position: relative;">
                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
@@ -51,6 +56,7 @@
                                 </div>
                             </div>
                         </td>
+                        @endrole
                     </tr>
                 @endforeach
                 </tbody>

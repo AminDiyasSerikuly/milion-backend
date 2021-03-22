@@ -32,7 +32,10 @@ class ScheduleController extends Controller
             if (Auth::user()->student) {
                 $schedules = $schedules->where('group_student.student_id', '=', Auth::user()->student->id);
             }
-
+        } elseif (Auth::user()->hasRole('teacher')) {
+            if (Auth::user()->teacher) {
+                $schedules = $schedules->where('groups.teacher_id', '=', Auth::user()->teacher->id);
+            }
         }
 
         $schedules = $schedules->select('*', 'schedules.id as schedule_id')

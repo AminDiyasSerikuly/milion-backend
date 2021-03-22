@@ -36,7 +36,7 @@ class Student extends Model
             'phone' => 'required|unique:users',
             'course_price' => 'required|int|digits_between:1,10',
             'advisor_id' => 'required',
-            'subject' => 'required',
+            'groups' => 'required',
             'parent_full_name' => 'required',
             'parent_phone' => 'required',
         ];
@@ -51,7 +51,7 @@ class Student extends Model
             'school' => 'required',
             'course_price' => 'required|int|digits_between:1,10',
             'advisor_id' => 'required',
-            'subject' => 'required',
+            'groups' => 'required',
             'parent_full_name' => 'required',
             'parent_phone' => 'required',
         ];
@@ -70,5 +70,10 @@ class Student extends Model
     public function subjects()
     {
         return $this->belongsToMany(Subjects::class, StudentSubject::class, 'student_id', 'subject_id');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, GroupStudent::class, 'student_id', 'group_id');
     }
 }

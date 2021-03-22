@@ -11,6 +11,13 @@ class Group extends Model
 
     protected $table = 'groups';
 
+    protected $fillable = [
+        'name',
+        'subject_id',
+        'is_active',
+        'teacher_id',
+    ];
+
 
     public function subject()
     {
@@ -27,4 +34,8 @@ class Group extends Model
         return $this->hasMany(GroupStudent::class);
     }
 
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
 }

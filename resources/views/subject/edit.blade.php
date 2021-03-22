@@ -6,8 +6,6 @@
                 <div class="card-header">
                     <h3 class="card-title">Форма для заполнение предмета</h3>
                 </div>
-                <div class="alert"><span class="text-danger">При создание предмета автоматический создается группа под этот предмет.</span>
-                </div>
                 <form action="{{route('subject.update', ['subject' => $subject->id ])}}" method="POST">
                     @method('PUT')
                     {{Form::token()}}

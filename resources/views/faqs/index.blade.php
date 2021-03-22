@@ -1,12 +1,16 @@
 @extends('layouts.dashboard')
 @section('title')
+
     Часто задаваемые вопросы  (FAQ)
+
 @endsection
 @section('dashboard-content')
     <div class="card">
+        @role('admin|moderator')
         <div class="card-header">
             <a href="{{route('faq.create')}}" class="btn btn-success">Добавить часто задаваемые вопросы</a>
         </div>
+        @endrole
         <!-- /.card-header -->
         <div class="card-body">
             <table id="faq_fata_table" class="table table-bordered table-striped">
@@ -16,7 +20,9 @@
                     <th>Ответ</th>
                     <th>Дата создание</th>
                     <th>Дата изменение</th>
+                    @role('admin|moderator')
                     <th></th>
+                    @endrole
                 </tr>
                 </thead>
                 <tbody>
@@ -26,6 +32,7 @@
                         <td>{{$faq->answer}}</td>
                         <td>{{$faq->created_at}}</td>
                         <td>{{$faq->updated_at}}</td>
+                        @role('admin|moderator')
                         <td>
                             <div class="btn-group" style="position: relative;">
                                 <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
@@ -33,7 +40,7 @@
                                     Действие
                                 </button>
                                 <div class="dropdown-menu" style="position: absolute;">
-                                    <a  class="dropdown-item" href="{{route('faq.edit', $faq->id)}}">
+                                    <a class="dropdown-item" href="{{route('faq.edit', $faq->id)}}">
                                         <i class="fa fa-edit"></i>
                                         &nbsp;
                                         Редактировать
@@ -50,6 +57,7 @@
                                 </div>
                             </div>
                         </td>
+                        @endrole
 
                     </tr>
                 @endforeach

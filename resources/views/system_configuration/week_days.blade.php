@@ -2,9 +2,11 @@
 @section('dashboard-content')
     <div class="card">
         <div class="card-header">
+            @role('admin')
             <a href="" class="btn btn-success" data-toggle="modal" data-target="#common_time">
                 Указать время и длительность для всех дней
             </a>
+            @endrole
         </div>
         <div class="card-body">
             <div class="row">

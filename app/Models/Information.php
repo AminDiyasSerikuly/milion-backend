@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Information extends Model
@@ -11,32 +12,40 @@ class Information extends Model
     {
         $result = cache()->remember('test_count', '300', function () {
 
-            $user_count = User::all()->count();
-            $student_count = User::join('students', 'users.id', '=', 'students.user_id')
-                ->count();
+        $currentUser = Auth::user();
+        $user_count = User::all()->count();
+        $student_count = User::join('students', 'users.id', '=', 'students.user_id')
+            ->count();
 
-            $advisor_count = User::join('advisors', 'users.id', '=', 'advisors.user_id')
-                ->count();
+        $advisor_count = User::join('advisors', 'users.id', '=', 'advisors.user_id')
+            ->count();
 
-            $teacher_count = User::join('teachers', 'users.id', '=', 'teachers.user_id')
-                ->count();
+        $teacher_count = User::join('teachers', 'users.id', '=', 'teachers.user_id')
+            ->count();
 
-            $group_count = Group::all()->count();
+        $group_count = Group::all()->count();
+        $subject_count = Subjects::all()->count();
 
-            $subject_count = Subjects::all()->count();
+        if ($currentUser->hasRole('student')) {
+            $group_count = Auth::user()->student->groups ? count(Auth::user()->student->groups->toArray()) : 0;
+            $subject_count = Auth::user()->student->subjects ? count(Auth::user()->student->subjects->toArray()) : 0;
+        } elseif ($currentUser->hasRole('teacher')) {
+            $group_count = Auth::user()->teacher->groups ? count(Auth::user()->teacher->groups->toArray()) : 0;
+            $subject_count = Auth::user()->teacher->subjects ? count(Auth::user()->teacher->subjects->toArray()) : 0;
+        }
 
-            $news_count = News::all()->count();
 
+        $news_count = News::all()->count();
 
-            $result = [
-                'user_count' => $user_count,
-                'student_count' => $student_count,
-                'advisor_count' => $advisor_count,
-                'teacher_count' => $teacher_count,
-                'group_count' => $group_count,
-                'subject_count' => $subject_count,
-                'news_count' => $news_count
-            ];
+        $result = [
+            'user_count' => $user_count,
+            'student_count' => $student_count,
+            'advisor_count' => $advisor_count,
+            'teacher_count' => $teacher_count,
+            'group_count' => $group_count,
+            'subject_count' => $subject_count,
+            'news_count' => $news_count
+        ];
             return $result;
         });
 

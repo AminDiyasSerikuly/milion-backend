@@ -4,6 +4,9 @@ $advisors = collect($advisors)->pluck('first_name', 'id');
 
 $subjects = \App\Models\Subjects::all();
 $subjects = collect($subjects)->pluck('title', 'id');
+
+$groups = \App\Models\Group::all();
+$groups = collect($groups)->pluck('name', 'id');
 ?>
 @extends('layouts.dashboard')
 @section('dashboard-content')
@@ -114,11 +117,11 @@ $subjects = collect($subjects)->pluck('title', 'id');
                                'style' => 'width: 100%;'])}}
                         </div>
                         <div class="form-group">
-                            <label>Предметы</label>
-                            {{Form::select('subject[]', $subjects, $student->subjects->pluck('id')->toArray(),
+                            <label>Группы</label>
+                            {{Form::select('groups[]', $groups, $student->groups->pluck('id')->toArray(),
                              ['class' => 'select2bs4',
                               'multiple' => 'multiple',
-                              'data-placeholder' => 'Выберите предмет',
+                              'data-placeholder' => 'Выберите группу',
                               'style' => 'width: 100%;'])}}
                         </div>
                     </div>

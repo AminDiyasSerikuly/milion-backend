@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Advisor;
 use App\Http\Controllers\Controller;
+use App\Models\Group;
 use App\Models\GroupStudent;
 use App\Models\Student;
 use App\Models\StudentSubject;
@@ -81,22 +82,22 @@ class StudentController extends Controller
             $student->user_id = $user->id;
             $student->save();
 
-            $subjects = Subjects::whereIn('id', $data->subject)->get();
+            $groups = Group::whereIn('id', $data->groups)->get();
 
-            foreach ($subjects as $subject) {
+            foreach ($groups as $group) {
                 DB::table('student_subject')->insert([
                     'student_id' => $student->id,
-                    'subject_id' => $subject->id,
+                    'subject_id' => $group->subject->id,
                 ]);
 
-                if (!isset($subject->group)) {
-                    $data->session()->flash('danger', [1 => 'Группа предмета не существует!']);
+                if (!isset($group->subject)) {
+                    $data->session()->flash('danger', [1 => 'Предмет группы не существует!']);
                     return redirect(route('student.index'));
                 }
 
                 DB::table('group_student')->insert([
                     'student_id' => $student->id,
-                    'group_id' => $subject->group->id,
+                    'group_id' => $group->id,
                 ]);
             }
 
@@ -160,22 +161,22 @@ class StudentController extends Controller
                 GroupStudent::destroy($studentGroup->pluck('id')->toArray());
             }
 
-            $subjects = Subjects::whereIn('id', $data->subject)->get();
+            $groups = Group::whereIn('id', $data->groups)->get();
 
-            foreach ($subjects as $subject) {
+            foreach ($groups as $group) {
                 DB::table('student_subject')->insert([
                     'student_id' => $student->id,
-                    'subject_id' => $subject->id,
+                    'subject_id' => $group->subject->id,
                 ]);
 
-                if (!isset($subject->group)) {
-                    $data->session()->flash('danger', [1 => 'Группа предмета не существует!']);
+                if (!isset($group->subject)) {
+                    $data->session()->flash('danger', [1 => 'Предмет группы не существует!']);
                     return redirect(route('student.index'));
                 }
 
                 DB::table('group_student')->insert([
                     'student_id' => $student->id,
-                    'group_id' => $subject->group->id,
+                    'group_id' => $group->id,
                 ]);
             }
 
