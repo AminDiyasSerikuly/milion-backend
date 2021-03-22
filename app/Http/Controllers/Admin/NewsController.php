@@ -33,10 +33,9 @@ class NewsController extends Controller
             $request->session()->flash('danger', $validation->errors()->all());
             return back()->withInput();
         }
+        $file = new FileUpload(new News());
+        $upload_result = $file->upload($request);
         try {
-            $file = new FileUpload(new News());
-            $upload_result = $file->upload($request);
-
             DB::table('news')->insert([
                 'name' => $request->name,
                 'title' => $request->title,
@@ -68,14 +67,12 @@ class NewsController extends Controller
             return back()->withInput();
         }
 
+        if ($request->hasFile('image')) {
+            $file = new FileUpload(new News());
+            $upload_result = $file->upload($request);
+        }
         try {
-
             $data = [];
-            if ($request->hasFile('image')) {
-                $file = new FileUpload(new News());
-                $upload_result = $file->upload($request);
-            }
-
             $data = [
                 'name' => $request->name,
                 'title' => $request->title,
@@ -84,7 +81,7 @@ class NewsController extends Controller
                 'author_id' => Auth::user()->id,
                 'content' => $request->news_content,
             ];
-            if(isset($upload_result)){
+            if (isset($upload_result)) {
                 $data['image'] = $upload_result['name'];
             }
 
