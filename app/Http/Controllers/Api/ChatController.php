@@ -53,7 +53,11 @@ class ChatController extends BaseController
     public function send(Request $request)
     {
         $author_id = Auth::user()->id;
+        if (!isset($request->recipient_id)) {
+            return $this->sendError('recipient_id is required!');
+        }
         $recipient_id = $request->recipient_id;
+
         $recipient = User::where(['id' => $recipient_id])->first();
         $message = $request->message;
 

@@ -23,6 +23,7 @@ Route::group([
     'namespace' => 'Api',
     'middleware' => 'auth:api',
 ], function () {
+    Route::get('users', 'UserController@all');
     Route::get('user', 'UserController@info');
     Route::get('user/{id}', 'UserController@userById');
 

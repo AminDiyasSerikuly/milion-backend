@@ -62,6 +62,11 @@ class Student extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function advisor()
+    {
+        return $this->belongsTo(Advisor::class);
+    }
+
     public function student_subjects()
     {
         return $this->hasMany(StudentSubject::class);
@@ -75,5 +80,10 @@ class Student extends Model
     public function groups()
     {
         return $this->belongsToMany(Group::class, GroupStudent::class, 'student_id', 'group_id');
+    }
+
+    public function teachers()
+    {
+        
     }
 }
