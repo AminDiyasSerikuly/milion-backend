@@ -17,6 +17,9 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         $role = $this->getRole();
+        if (Auth::user()->hasRole('admin')) {
+            return redirect(route('information.index'));
+        }
         $currentUser = (new \App\Patterns\Profile\Factory)->getItem($role)->getRelation();
         return view('profile.show', ['currentUser' => $currentUser]);
     }
@@ -47,7 +50,7 @@ class ProfileController extends Controller
         return response()->json($result);
     }
 
-    public  function getRole()
+    public function getRole()
     {
         $roles = Auth::user()->roles->pluck('id')->toArray();
         if (!empty($roles)) {
