@@ -81,8 +81,8 @@ class Schedule extends Model
                 $teacher = ($schedule->group && $schedule->group->subject) ?
                     $schedule->group->subject->teacher : null;
                 $teacher = isset($teacher) ? sprintf('%s %s', $teacher->first_name, $teacher->last_name) : 'Не указано';
-                $scheduleArray['subject_name'] = $schedule->group->name;
-                $scheduleArray['cabinet'] = $schedule->cabinet->title;
+                $scheduleArray['subject_name'] = $schedule->group ? $schedule->group->name : 'Не указано';
+                $scheduleArray['cabinet'] = $schedule->cabinet ?  $schedule->cabinet->title :  'Не указано';
                 $scheduleArray['teacher_name'] = $teacher;
                 $scheduleArray['start_time'] = $schedule->lesson_begin_time;
                 $scheduleArray['end_time'] = $schedule->lesson_end_time;
