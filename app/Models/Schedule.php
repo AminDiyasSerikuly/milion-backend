@@ -78,7 +78,8 @@ class Schedule extends Model
             $weekDaysArray['title_ru'] = $day->title_ru;
             foreach ($schedulesObject as $schedule) {
                 $scheduleArray = [];
-                $teacher = $schedule->group->subject->teacher;
+                $teacher = ($schedule->group && $schedule->group->subject) ?
+                    $schedule->group->subject->teacher : null;
                 $teacher = isset($teacher) ? sprintf('%s %s', $teacher->first_name, $teacher->last_name) : 'Не указано';
                 $scheduleArray['subject_name'] = $schedule->group->name;
                 $scheduleArray['cabinet'] = $schedule->cabinet->title;
