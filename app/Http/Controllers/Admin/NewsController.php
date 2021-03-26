@@ -43,7 +43,7 @@ class NewsController extends Controller
                 'is_active' => isset($request->is_active) ?? 1,
                 'author_id' => Auth::user()->id,
                 'content' => $request->news_content,
-                'image' => $upload_result['name'],
+                'image' => 'news/' . $upload_result['name'],
             ]);
             $request->session()->flash('success', 'Вы успешно добавили новость');
             return redirect(route('news.index'));
@@ -82,7 +82,7 @@ class NewsController extends Controller
                 'content' => $request->news_content,
             ];
             if (isset($upload_result)) {
-                $data['image'] = $upload_result['name'];
+                $data['image'] = 'news/' . $upload_result['name'];
             }
 
 

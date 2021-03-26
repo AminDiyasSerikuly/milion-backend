@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 $roleName = (count(Auth::user()->getRoleNames()) ? Auth::user()->getRoleNames()[0] : '');
 $social_id = $currentUser && $currentUser->social_id ? $currentUser->social_id : 'Не указано';
 $disabled = Auth::user()->hasRole(['admin']) ? '' : 'disabled';
-$profileImage = Auth::user()->image ? asset('files/images/profile' . DIRECTORY_SEPARATOR . Auth::user()->image) : asset('files/images/default/default_image.png');
+$profileImage = Auth::user()->image ? asset('files/images/' . DIRECTORY_SEPARATOR . Auth::user()->image) : asset('files/images/default/default_image.png');
 
 ?>
 @extends('layouts.dashboard')

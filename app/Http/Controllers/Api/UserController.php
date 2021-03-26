@@ -38,7 +38,6 @@ class UserController extends BaseController
     public function all()
     {
         $users = User::all()->toArray();
-
         return $this->sendResponse($users);
     }
 }

@@ -48,7 +48,7 @@ class FileController extends Controller
             }
             File::cleanDirectory($fromPath);
             File::deleteDirectory($fromPath);
-            Auth::user()->image = $file;
+            Auth::user()->image = 'profile/' . $file;
             Auth::user()->save();
         }
     }

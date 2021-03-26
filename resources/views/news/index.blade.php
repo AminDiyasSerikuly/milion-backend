@@ -20,7 +20,7 @@
                                  height: 55%;
                                  background-position: center;
                                  background-size: contain;
-                                 background-image: url('{{asset('files/images/news/' . $item->image)}}');
+                                 background-image: url('{{asset('files/images/' . $item->image)}}');
                                  background-repeat: no-repeat;
                                  ">
                         <div class="card-body">
