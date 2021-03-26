@@ -30,7 +30,7 @@ class UserController extends BaseController
         $user_id = $request->id;
         $user = User::find($user_id);
         if (isset($user)) {
-            return $this->sendResponse($user);
+            return $this->sendResponse($user->toArray());
         }
         return $this->sendError('Такого пользователя нет');
     }
