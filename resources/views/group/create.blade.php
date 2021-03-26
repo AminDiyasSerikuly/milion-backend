@@ -47,7 +47,10 @@
                             </div>
 
                             {{Form::select('teacher_id',  $teachers, null,
-                                ['class' => 'form-control'])}}
+                                [
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Выберите преподавателя!',
+                                ])}}
                         </div>
                     </div>
 

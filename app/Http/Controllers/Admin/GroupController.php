@@ -73,7 +73,7 @@ class GroupController extends Controller
             DB::beginTransaction();
             $group->fill($request->all());
             $group->save();
-
+            $request->session()->flash('success', 'Вы успешно изменили!');
             DB::commit();
         } catch (\Exception $exception) {
             DB::rollBack();

@@ -1,8 +1,8 @@
 @php($subjects = \App\Models\Subjects::all()->pluck('title', 'id'))
-@php($teachers = \App\Models\Teacher::all()->toArray())
-@php($teachers = array_map(function ($item){
-    return sprintf('%s %s', $item['first_name'], $item['last_name']);
-}, $teachers))
+@php($teachers = \App\Models\Teacher::all()->pluck('first_name', 'id')->toArray())
+{{--@php($teachers = array_map(function ($item){--}}
+{{--    return sprintf('%s %s', $item['first_name'], $item['last_name']);--}}
+{{--}, $teachers))--}}
 @extends('layouts.dashboard')
 @section('dashboard-content')
     <div class="row">
@@ -16,7 +16,7 @@
                     {{Form::token()}}
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Название предмета</label>
+                            <label>Название группы</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-pen"></i></span>
@@ -48,7 +48,10 @@
                                 </div>
 
                                 {{Form::select('teacher_id',  $teachers, $group->teacher_id,
-                                    ['class' => 'form-control'])}}
+                                    [
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Выберите преподавателя!',
+                                    ])}}
                             </div>
                         </div>
 
