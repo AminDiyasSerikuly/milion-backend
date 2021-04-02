@@ -35,7 +35,7 @@ Route::group([
     Route::get('faqs', 'FaqController@all');
     Route::get('faq/{id}', 'FaqController@faqById');
 
-    Route::get('chats', 'ChatController@chats');
+    Route::post('chats', 'ChatController@chats');
     Route::get('chat/{id}', 'ChatController@getById');
     Route::post('chat/{id}/delete', 'ChatController@delete');
     Route::post('chat/send', 'ChatController@send');
