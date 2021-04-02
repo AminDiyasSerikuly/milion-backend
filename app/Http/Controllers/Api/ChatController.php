@@ -18,10 +18,17 @@ class ChatController extends BaseController
         //User chat's id
         $first_user_id = Auth::user()->id;
         $second_user_id = $request->user_id;
+        $chatsId = [];
+        if (Auth::user()->hasRole('student')) {
+            $chatsId = Message::whereIn('sender_id', [$first_user_id, $second_user_id])
+                ->andWhereIn('recipient_id', [$first_user_id, $second_user_id])
+                ->pluck('chat_id')->toArray();
+        } elseif (Auth::user()->hasRole('advisor')) {
+            $chatsId = Message::whereIn('sender_id', [$first_user_id])
+                ->orWhereIn('recipient_id', [$first_user_id])
+                ->pluck('chat_id')->toArray();
+        }
 
-        $chatsId = Message::whereIn('sender_id', [$first_user_id, $second_user_id])
-            ->oRWhereIn('recipient_id', [$first_user_id, $second_user_id])
-            ->pluck('chat_id')->toArray();
 
         $chats = Chat::whereIn('id', $chatsId)->get();
         if (isset($chats)) {
