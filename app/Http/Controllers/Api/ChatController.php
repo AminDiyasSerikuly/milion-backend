@@ -20,7 +20,7 @@ class ChatController extends BaseController
         $second_user_id = $request->user_id;
 
         $chatsId = Message::whereIn('sender_id', [$first_user_id, $second_user_id])
-            ->andWhereIn('recipient_id', [$first_user_id, $second_user_id])
+            ->oRWhereIn('recipient_id', [$first_user_id, $second_user_id])
             ->pluck('chat_id')->toArray();
 
         $chats = Chat::whereIn('id', $chatsId)->get();
