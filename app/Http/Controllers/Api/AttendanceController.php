@@ -16,6 +16,9 @@ class AttendanceController extends BaseController
     {
         $group_id = $request->group_id;
         $schedulesDate = Schedule::where(['group_id' => $group_id])->pluck('week_day_id')->toArray();
+        if (empty($schedulesDate)) {
+            return $this->sendError('Группа не найдена!');
+        }
         $monthDays = $this->getMonthDays();
         foreach ($monthDays as $day) {
             $weekDay = date('w', strtotime($day));
@@ -108,6 +111,8 @@ class AttendanceController extends BaseController
                 ]);
             }
         }
+
+        return $this->sendResponse([]);
 
 
     }

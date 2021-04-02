@@ -44,6 +44,8 @@ class NewsController extends Controller
                 'author_id' => Auth::user()->id,
                 'content' => $request->news_content,
                 'image' => 'news/' . $upload_result['name'],
+                'created_at' => date('Y-m-d'),
+                'updated_at' => date('Y-m-d'),
             ]);
             $request->session()->flash('success', 'Вы успешно добавили новость');
             return redirect(route('news.index'));
@@ -72,7 +74,6 @@ class NewsController extends Controller
             $upload_result = $file->upload($request);
         }
         try {
-            $data = [];
             $data = [
                 'name' => $request->name,
                 'title' => $request->title,
@@ -80,6 +81,7 @@ class NewsController extends Controller
                 'is_active' => isset($request->is_active) ?? 1,
                 'author_id' => Auth::user()->id,
                 'content' => $request->news_content,
+                'updated_at' => date('Y-m-d')
             ];
             if (isset($upload_result)) {
                 $data['image'] = 'news/' . $upload_result['name'];

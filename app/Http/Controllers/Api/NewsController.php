@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 
 class NewsController extends BaseController
 {
-    public function all()
+    public function all(Request $request)
     {
         $news = News::all()->toArray();
+        if (isset($request->from_date) && isset($request->till_date)) {
+            $news = News::whereBetween('created_at', [$request->from_date, $request->till_date])->get()
+            ->toArray();
+        }
+
         return $this->sendResponse($news);
     }
 
@@ -22,7 +27,5 @@ class NewsController extends BaseController
             return $this->sendResponse($oneNews);
         }
         return $this->sendError('По указанному id новость не найдено !!');
-
-
     }
 }
