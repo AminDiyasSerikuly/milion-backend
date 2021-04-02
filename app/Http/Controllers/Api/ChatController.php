@@ -13,16 +13,17 @@ use Illuminate\Support\Facades\DB;
 
 class ChatController extends BaseController
 {
-    public function myChats()
+    public function chats(Request $request)
     {
         //User chat's id
-        $chatsId = Message::where(['sender_id' => Auth::user()->id])
-            ->orWhere(['recipient_id' => Auth::user()->id])
+        $first_user_id = Auth::user()->id;
+        $second_user_id = $request->user_id;
+
+        $chatsId = Message::whereIn('sender_id', [$first_user_id, $second_user_id])
+            ->andWhereIn('recipient_id', [$first_user_id, $second_user_id])
             ->pluck('chat_id')->toArray();
 
         $chats = Chat::whereIn('id', $chatsId)->get();
-
-
         if (isset($chats)) {
             $chats = $chats->toArray();
             return $this->sendResponse($chats);
